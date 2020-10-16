@@ -1,2 +1,2 @@
 # HybPhaser
-Workflow to detect and phsae hybrids in target capture data
+Workflow to detect and phase hybrids in target capture data
