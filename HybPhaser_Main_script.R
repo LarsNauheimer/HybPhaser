@@ -4,15 +4,10 @@
 # Make sure you set all variables in the configuration scripts before running them. 
 
 
-### Packages
+### Packages to load
 library(ape)
 library(seqinr)
 library(stringr)
-library(dplyr)
-library(tidyr)
-library(ggplot2)
-library(ggrepel)
-library(ggpubr)
 
 
 ##################################
