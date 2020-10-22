@@ -1,11 +1,11 @@
 # HybPhaser
-Detecting and phasing of hybrid accessions in target capture datasets.
 
 HybPhaser was developed to deal with hybrids (and polyploids) in target capture datasets. 
 
 It detects hybrids by measuring heterozygosity in the dataset and phase hybrid accessions by separating reads according to similarity with selected taxa that represent parental clades. 
 
 HybPhaser is built as an extension to the efficient assembly pipeline HybPiper. 
+
 
 ## Installation
 
