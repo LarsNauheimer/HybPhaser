@@ -11,9 +11,7 @@ HybPhaser is built as an extension to the efficient assembly pipeline HybPiper.
 
 HybPhaser Installation
 
-HybPhaser scripts can be downloaded from GitHub
-
-git clone https://github.com/larsnauheimer/HybPhaser.git
+HybPhaser scripts can be downloaded from GitHub (https://github.com/larsnauheimer/HybPhaser)
 
 Software dependencies
 
