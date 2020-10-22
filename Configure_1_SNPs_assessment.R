@@ -52,3 +52,11 @@ threshold_exclude_loci_paralogs_4all_propSNP = "1.5*IQR" # e.g. "none", "1.5*IQR
 # set whether outlier loci are to be removed per sample
 remove_paralogs_4each = "yes"       # "yes" or "no"
 
+
+### Sequence list generation
+
+# The fasta files for the normal contig sequences (not supercontigs) in HybPiper do not contain the gene names. 
+# When generating seuquence lists for samples, gene sequences do not contain the gene name, but only the sample name. 
+# This can be corrected, but the step is time consuming and can be skipped with setting the next variable to "no".
+
+write_gene_names_in_contig_sample_seqlist = "no"  # "yes" or "no"
