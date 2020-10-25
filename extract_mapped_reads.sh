@@ -36,14 +36,18 @@ mkdir -p $OUTPUT_FOLDER/
 while read NAME;
 do
 if [ $NAME != "" ]; then 
-    echo Extracting mapped reads from $NAME
-    #samtools fastq -F 4 $BASE_FOLDER/$NAME/$NAME".bam" > $OUTPUT_FOLDER/$NAME".fastq"
-    samtools view -F 4 -b $BASE_FOLDER/$NAME/$NAME".bam"| samtools sort -n -o $OUTPUT_FOLDER/$NAME"_sort.bam"
-    samtools fixmate -m $OUTPUT_FOLDER/$NAME"_sort.bam" $OUTPUT_FOLDER/$NAME"_fixm.bam"
-    samtools sort -o $OUTPUT_FOLDER/$NAME"_fixmsort.bam" $OUTPUT_FOLDER/$NAME"_fixm.bam"
-    samtools markdup -r -s $OUTPUT_FOLDER/$NAME"_fixmsort.bam" $OUTPUT_FOLDER/$NAME"_dupm.bam"
-    samtools fastq $OUTPUT_FOLDER/$NAME"_dupm.bam" > $OUTPUT_FOLDER/$NAME".fastq"
-    rm $OUTPUT_FOLDER/$NAME"_sort.bam" $OUTPUT_FOLDER/$NAME"_fixm.bam" $OUTPUT_FOLDER/$NAME"_fixmsort.bam" $OUTPUT_FOLDER/$NAME"_dupm.bam"
+    if [ -f $BASE_FOLDER/$NAME/$NAME".bam" ]; then        
+        echo Extracting mapped reads from $NAME
+        #samtools fastq -F 4 $BASE_FOLDER/$NAME/$NAME".bam" > $OUTPUT_FOLDER/$NAME".fastq"
+        samtools view -F 4 -b $BASE_FOLDER/$NAME/$NAME".bam"| samtools sort -n -o $OUTPUT_FOLDER/$NAME"_sort.bam"
+        samtools fixmate -m $OUTPUT_FOLDER/$NAME"_sort.bam" $OUTPUT_FOLDER/$NAME"_fixm.bam"
+        samtools sort -o $OUTPUT_FOLDER/$NAME"_fixmsort.bam" $OUTPUT_FOLDER/$NAME"_fixm.bam"
+        samtools markdup -r -s $OUTPUT_FOLDER/$NAME"_fixmsort.bam" $OUTPUT_FOLDER/$NAME"_dupm.bam"
+        samtools fastq $OUTPUT_FOLDER/$NAME"_dupm.bam" > $OUTPUT_FOLDER/$NAME".fastq"
+        rm $OUTPUT_FOLDER/$NAME"_sort.bam" $OUTPUT_FOLDER/$NAME"_fixm.bam" $OUTPUT_FOLDER/$NAME"_fixmsort.bam" $OUTPUT_FOLDER/$NAME"_dupm.bam"
+    else 
+        echo Skipped extracting reads for $NAME. No BAM file found.
+    fi
 fi
 done < $NAMESLIST
 
