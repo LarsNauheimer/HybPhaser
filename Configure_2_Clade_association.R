@@ -22,9 +22,9 @@ path_to_read_files_cladeassociation = ""
 read_type_cladeassociation = "single-end" # "single-end" or "paired-end"
 
 # if reads are paird-end, set unique part of filename including the ending (e.g. "_R1.fastq", "_R2.fastq")
-# if reads are single-end, you can ignore this 
-ID_read_pair1 = "_1.fastq.gz"
-ID_read_pair2 = "_2.fastq.gz"
+# if reads are single-end, you can ignore these 
+ID_read_pair1 = ""
+ID_read_pair2 = ""
 
 file_with_samples_included <- ""
 

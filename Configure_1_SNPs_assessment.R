@@ -26,6 +26,8 @@ contig = "normal"          # "normal" or "supercontig"
 ### Dataset optimization 
 #########################
 
+# You can leave these settings as they are and check the graphs and tables first before deciding on thresholds that make sense for your dataset
+
 ### Missing data 
 # remove samples and loci from the dataset that have on average low amount of sequences and/or short sequences recovered
 
