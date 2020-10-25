@@ -54,31 +54,28 @@ dir.create(folder4seq_contig_samples_clean, showWarnings = T)
 #########################################################################
 # this extracts sequences from all subfolders in the HybPiper folder and collates them into one file per locus
 
-
 # HybPhaser
 if(contig!="supercontig"){
   for(locus in targets_name){
-    command_cat_consensus <- paste("cat",file.path(path_to_hybpiper_results,"{",paste(samples,collapse=","),"}",locus,"*/sequences/remapping/",paste(locus,"_consensus.fasta",sep="")),">",file.path(folder4seq_consensus_loci_raw,paste(locus,"_consensus_raw.fasta",sep="")))
-    #command_cat_consensus <- paste("find ", path_to_hybpiper_results," -type f -wholename '*/",locus,"*/sequences/remapping/",locus,"_consensus.fasta' -exec cat {} >",file.path(folder4seq_consensus_loci_raw,paste(locus,"_consensus_raw.fasta",sep=""))," \\;", sep="")
-    
+    command_cat_consensus <- paste("cat",file.path(path_to_hybpiper_results,"*",locus,"*/sequences/remapping/",paste(locus,"_consensus.fasta",sep="")),">",file.path(folder4seq_consensus_loci_raw,paste(locus,"_consensus_raw.fasta",sep="")))
+    command_cat_contig    <- paste("cat",file.path(path_to_hybpiper_results,"*",locus,"*/sequences/FNA/",paste(locus,".FNA",sep="")),">",file.path(folder4seq_contig_loci_raw,paste(locus,"_contig_raw.fasta",sep="")))
     system(command_cat_consensus)
-    command_cat_contig <- paste("cat",file.path(path_to_hybpiper_results,"{",paste(samples,collapse=","),"}",locus,"*/sequences/FNA/",paste(locus,".FNA",sep="")),">",file.path(folder4seq_contig_loci_raw,paste(locus,"_contig_raw.fasta",sep="")))
     system(command_cat_contig)
-    command_remove_locus_in_seqnames <- (paste("sed -i 's/-",locus,"//g' ", file.path(folder4seq_consensus_loci_raw,paste(locus,"_consensus_raw.fasta",sep="")), sep=""))
-    system(command_remove_locus_in_seqnames)
-    command_remove_locus_in_seqnames <- (paste("sed -i 's/-",locus,"//g' ", file.path(folder4seq_contig_loci_raw,paste(locus,"_contig_raw.fasta",sep="")), sep=""))
-    system(command_remove_locus_in_seqnames)
+    command_remove_locus_in_seqnames_consensus <- (paste("sed -i 's/-",locus,"//g' ", file.path(folder4seq_consensus_loci_raw,paste(locus,"_consensus_raw.fasta",sep="")), sep=""))
+    command_remove_locus_in_seqnames_contig <- (paste("sed -i 's/-",locus,"//g' ", file.path(folder4seq_contig_loci_raw,paste(locus,"_contig_raw.fasta",sep="")), sep=""))
+    system(command_remove_locus_in_seqnames_consensus)
+    system(command_remove_locus_in_seqnames_contig)
   } 
 } else {
   for(locus in targets_name){
-    command_cat_consensus <- paste("cat",file.path(path_to_hybpiper_results,"{",paste(samples,collapse=","),"}",locus,"*/sequences/remapping/",paste(locus,"_supercontig-consensus.fasta",sep="")),">",file.path(folder4seq_consensus_loci_raw,paste(locus,"_supercontig-consensus_raw.fasta",sep="")))
+    command_cat_consensus <- paste("cat",file.path(path_to_hybpiper_results,"*",locus,"*/sequences/remapping/",paste(locus,"_supercontig-consensus.fasta",sep="")),">",file.path(folder4seq_consensus_loci_raw,paste(locus,"_supercontig-consensus_raw.fasta",sep="")))
     system(command_cat_consensus)
-    command_cat_contig <- paste("cat",file.path(path_to_hybpiper_results,"{",paste(samples,collapse=","),"}",locus,"*/sequences/intron/",paste(locus,"_supercontig.fasta",sep="")),">",file.path(folder4seq_contig_loci_raw,paste(locus,"_supercontig-contig_raw.fasta",sep="")))
+    command_cat_contig <- paste("cat",file.path(path_to_hybpiper_results,"*",locus,"*/sequences/intron/",paste(locus,"_supercontig.fasta",sep="")),">",file.path(folder4seq_contig_loci_raw,paste(locus,"_supercontig-contig_raw.fasta",sep="")))
     system(command_cat_contig)
-    command_remove_locus_in_seqnames <- (paste("sed -i 's/-",locus,"//g' ", file.path(folder4seq_consensus_loci_raw,paste(locus,"_supercontig-consensus_raw.fasta",sep="")), sep=""))
-    system(command_remove_locus_in_seqnames) 
-    command_remove_locus_in_seqnames <- (paste("sed -i 's/-",locus,"//g' ", file.path(folder4seq_contig_loci_raw,paste(locus,"_supercontig-contig_raw.fasta",sep="")), sep=""))
-    system(command_remove_locus_in_seqnames)
+    command_remove_locus_in_seqnames_consensus <- (paste("sed -i 's/-",locus,"//g' ", file.path(folder4seq_consensus_loci_raw,paste(locus,"_supercontig-consensus_raw.fasta",sep="")), sep=""))
+    system(command_remove_locus_in_seqnames_consensus) 
+    command_remove_locus_in_seqnames_contig <- (paste("sed -i 's/-",locus,"//g' ", file.path(folder4seq_contig_loci_raw,paste(locus,"_supercontig-contig_raw.fasta",sep="")), sep=""))
+    system(command_remove_locus_in_seqnames_contig)
   }
 }  
 
@@ -90,9 +87,42 @@ for(file in list.files(folder4seq_contig_loci_raw, full.names = T)){
 }
 
 
+# check whether accessions are in the hybpiper folder but not in the samples list.
+# if the sample list is smaller some sequences have to be removed from the loci lists
+
+hybpiper_result_dirs <- list.dirs(path_to_hybpiper_results, full.names = FALSE, recursive = FALSE)
+dirs_not_in_sample_list <- hybpiper_result_dirs[which(!(hybpiper_result_dirs %in% samples))]
+
+if(length(dirs_not_in_sample_list) !=0 ){
+  # consensus
+  for(raw_consensus_file in list.files(folder4seq_consensus_loci_raw, full.names = TRUE)){
+    locus_consensus_raw <- readLines(raw_consensus_file)
+    lines_with_samplename <- grep(paste(dirs_not_in_sample_list,collapse="|"),locus_consensus_raw)
+    if(length(lines_with_samplename) !=0){
+      lines_to_remove <- c(lines_with_samplename,lines_with_samplename+1)
+      locus_file_red <- locus_consensus_raw[-lines_to_remove]
+      conn <- file(raw_consensus_file)
+      writeLines(locus_file_red, conn)
+      close(conn)
+    }
+  }
+  # contig
+  for(raw_contig_file in list.files(folder4seq_contig_loci_raw, full.names = TRUE)){
+    locus_contig_raw <- readLines(raw_contig_file)
+    lines_with_samplename <- grep(paste(dirs_not_in_sample_list,collapse="|"),locus_contig_raw)
+    if(length(lines_with_samplename) !=0){
+      lines_to_remove <- c(lines_with_samplename,lines_with_samplename+1)
+      locus_file_hp_red <- locus_contig_raw[-lines_to_remove]
+      conn <- file(raw_contig_file)
+      writeLines(locus_file_hp_red, conn)
+      close(conn)
+    }
+  }
+}
+
 
 ########################################################################
-### remove loci from dtaset optimization (missing data and paralogs) ###
+### remove loci from dataset optimization (missing data and paralogs) ###
 ########################################################################
 
 ## copy all sequence lists to new folder before removing relevant sequences

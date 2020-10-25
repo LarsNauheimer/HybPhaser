@@ -2,6 +2,7 @@
 ### Generating summary table and graphs for assessment of heterozygosity and allele divergence of samples ###
 #############################################################################################################
 
+#input
 tab_snps_cl2b <- readRDS(file=file.path(output_Robjects,"Table_SNPs_cleaned.Rds"))
 tab_length <- readRDS(file=file.path(output_Robjects,"Table_consensus_length.Rds"))
 tab_length_cl2b <- readRDS(file=file.path(output_Robjects,"Table_consensus_length_cleaned.Rds"))
@@ -9,6 +10,7 @@ tab_length_cl2b <- readRDS(file=file.path(output_Robjects,"Table_consensus_lengt
 outloci_para_all <- readRDS(file=file.path(output_Robjects,"outloci_para_all.Rds"))
 outloci_para_each <- readRDS(file=file.path(output_Robjects,"outloci_para_each.Rds"))
 
+dir.create(output_assess, showWarnings = F)
 
 rownames(tab_length) <-  tab_length[,1]
 tab_length <- as.matrix(tab_length[,-c(1)])

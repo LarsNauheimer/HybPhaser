@@ -31,20 +31,20 @@ contig = "normal"          # "normal" or "supercontig"
 
 # set threshold for samples to be removed that have a low proportion of the number of loci recovered
 # e.g. 0.8 will only keep samples that have a sequence recovered for at least 80% of loci
-remove_samples_with_less_than_this_propotion_of_loci_recovered = 0.8
+remove_samples_with_less_than_this_propotion_of_loci_recovered = 0
 
 # set threshold for samples to be removed that have short sequence length recovered (as proportion of the target sequence length) 
 # e.g. 0.6 will only keep samples that have on average 60% of the target sequence length recovered
-remove_samples_with_less_than_this_propotion_of_target_sequence_length_recovered = 0.7
+remove_samples_with_less_than_this_propotion_of_target_sequence_length_recovered = 0
 
 
 # set threshold for loci to be removed that have a low proportion of the number of samples recovered
 # e.g. 0.8 will only keep loci that have a sequence recovered for at least 80% of samples
-remove_loci_with_less_than_this_propotion_of_samples_recovered = 0.8
+remove_loci_with_less_than_this_propotion_of_samples_recovered = 0
 
 # set threshold for loci to be removed that have short sequence length recovered (as proportion of the target sequence length) 
 # e.g. 0.6 will only keep loci that have on average 60% of the target sequence length recovered
-remove_loci_with_less_than_this_propotion_of_target_sequence_length_recovered = 0.7
+remove_loci_with_less_than_this_propotion_of_target_sequence_length_recovered = 0
 
 
 
