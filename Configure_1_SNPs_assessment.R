@@ -2,8 +2,9 @@
 ### Configuration for SNPS assessment and dataset optimization ###
 ##################################################################
 
-# set path to relevant folders and files and set contig type
 
+### General settings
+#####################
 
 # set path to the HybPiper base folder that contains the assembly results (e.g. "~/HybPiper_assembly/" )
 path_to_hybpiper_results = ""
@@ -25,38 +26,36 @@ contig = "normal"          # "normal" or "supercontig"
 ### Dataset optimization 
 #########################
 
-# set variables to define thresholds for the dataset optimization and run the script from the main script
-
 ### Missing data 
+# remove samples and loci from the dataset that have on average low amount of sequences and/or short sequences recovered
 
-# set threshold for each locus how much missing data (samples not sequenced) is required to be removed
-# recommend setting to "1.5*IQR", which removes outliers
-threshold_exclude_loci_x_missing_samples = "none"  # e.g. "none", "1.5*IQR", 10, 100, "proportion"
-proportion_of_missing_samples_per_locus = 0.1 # only applies when threshold_exclude_loci_x_missing_samples = "proportion"
+# set threshold for samples to be removed that have a low proportion of the number of loci recovered
+# e.g. 0.8 will only keep samples that have a sequence recovered for at least 80% of loci
+remove_samples_with_less_than_this_propotion_of_loci_recovered = 0.8
 
-# set threshold for each sample how much missing data (loci not sequenced) is required to be removed
-# recommend setting at first to "none" in order to not exclude any samples, but can be adjusted to remove pooor samples
-threshold_exclude_samples_x_missing_loci = "none"  # e.g. "none", "1.5*IQR", 100, 200, "proportion"
-proportion_of_missing_loci_per_sample = 0.1 # only applies when threshold_exclude_samples_x_missing_loci = "proportion"
+# set threshold for samples to be removed that have short sequence length recovered (as proportion of the target sequence length) 
+# e.g. 0.6 will only keep samples that have on average 60% of the target sequence length recovered
+remove_samples_with_less_than_this_propotion_of_target_sequence_length_recovered = 0.7
 
-# set threshold for minimum recovered sequence length for a sample to be included (as proportion of the target sequence length)
-# any sample with less than the given proportion of the target sequence length is removed from the dataset
-threshold_exclude_samples_x_proportion_of_target_sequence = "none"
+
+# set threshold for loci to be removed that have a low proportion of the number of samples recovered
+# e.g. 0.8 will only keep loci that have a sequence recovered for at least 80% of samples
+remove_loci_with_less_than_this_propotion_of_samples_recovered = 0.8
+
+# set threshold for loci to be removed that have short sequence length recovered (as proportion of the target sequence length) 
+# e.g. 0.6 will only keep loci that have on average 60% of the target sequence length recovered
+remove_loci_with_less_than_this_propotion_of_target_sequence_length_recovered = 0.7
+
 
 
 ### Paralogs 
 
-# set threshold of mean % of SNPs across all samples for a locus to be removed 
-threshold_exclude_loci_paralogs_4all_propSNP = "1.5*IQR" # e.g. "none", "1.5*IQR", 0.01, 0.05
+# set threshold to remove loci with high mean proportions of SNPs across all samples.
+# e.g. 0.02 will remove all loci with an average of 2% or SNPS across all samples
+# "outliers" will remove all loci that have more than 1.5*IQR (interquartile range) above the 3rd quartile of mean SNPs. 
+remove_loci_for_all_samples_with_more_than_this_mean_proportion_of_SNPs = "outliers"   # any number between 0 and 1 or "outliers" 
 
 # set whether outlier loci are to be removed per sample
-remove_paralogs_4each = "yes"       # "yes" or "no"
+# "yes" will remove for each samples loci that have a higher proportion of SNPs than 1.5*IQR (interquartile range) above the 3rd quartile
+remove_outlier_loci_for_each_sample = "yes"       # "yes" or "no"
 
-
-### Sequence list generation
-
-# The fasta files for the normal contig sequences (not supercontigs) in HybPiper do not contain the gene names. 
-# When generating seuquence lists for samples, gene sequences do not contain the gene name, but only the sample name. 
-# This can be corrected, but the step is time consuming and can be skipped with setting the next variable to "no".
-
-write_gene_names_in_contig_sample_seqlist = "no"  # "yes" or "no"
