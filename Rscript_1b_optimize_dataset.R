@@ -3,6 +3,8 @@
 ################################################################################
 
 # input
+source(file.path(path_to_config_scripts,"Configure_1_SNPs_assessment.R"))
+
 tab_snps <- readRDS(file=file.path(output_Robjects,"Table_SNPs_raw.Rds"))
 tab_length <- readRDS(file=file.path(output_Robjects,"Table_consensus_length.Rds"))
 
@@ -19,6 +21,9 @@ dir.create(output_cleaning, showWarnings = F)
 
 nloci <- length(colnames(loci))
 nsamples <- length(rownames(loci))
+
+failed_loci <- which(colSums(is.na(loci))==nrow(loci))
+failed_samples <- which(colSums(is.na(tab_snps))==nrow(tab_snps))
 
 # per locus
 
@@ -70,7 +75,6 @@ outsamples_missing <- unique(names(c(outsamples_missing_loci,outsamples_missing_
 outloci_missing_samples <- seq_per_locus_prop[which(seq_per_locus_prop < remove_loci_with_less_than_this_propotion_of_samples_recovered)]
 outloci_missing_target <- prop_target_length_per_locus[which(prop_target_length_per_locus < remove_loci_with_less_than_this_propotion_of_target_sequence_length_recovered)]
 outloci_missing <- unique(names(c(outloci_missing_samples,outloci_missing_target)))
-
 
 
 # removing bad loci and samples from the table 

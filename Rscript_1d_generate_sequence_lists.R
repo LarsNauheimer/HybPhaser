@@ -121,9 +121,9 @@ if(length(dirs_not_in_sample_list) !=0 ){
 }
 
 
-########################################################################
-### remove loci from dataset optimization (missing data and paralogs) ###
-########################################################################
+
+### remove loci from dataset optimization (missing data and paralogs)
+######################################################################
 
 ## copy all sequence lists to new folder before removing relevant sequences
 
@@ -140,17 +140,17 @@ system(paste("rename 's/_raw.fasta/.fasta/' ",folder4seq_contig_loci_clean,"/*ra
 
 ## remove all outlier loci
 
-files_consensus_clean <- list.files(path = folder4seq_consensus_loci_clean, full.names = T )
-files_contig_clean <- list.files(path = folder4seq_contig_loci_clean, full.names = T )
+loci_files_consensus_clean <- list.files(path = folder4seq_consensus_loci_clean, full.names = T )
+loci_files_contig_clean <- list.files(path = folder4seq_contig_loci_clean, full.names = T )
 
-loci_to_remove <- c(failed_loci, outloci_missing, outloci_para_all)
+loci_to_remove <- c(names(failed_loci), outloci_missing, names(outloci_para_all))
 
 if(length(loci_to_remove)==0){
-  files_to_remove_consensus=""
-  files_to_remove_contig=""
+  loci_files_to_remove_consensus=""
+  loci_files_to_remove_contig=""
 } else {
-  files_to_remove_consensus <- files_consensus_clean[grep(paste(c(names(loci_to_remove)),collapse="|"),files_consensus_clean)]
-  files_to_remove_contig <- files_contig_clean[grep(paste(c(names(loci_to_remove)),collapse="|"),files_contig_clean)]
+  loci_files_to_remove_consensus <- loci_files_consensus_clean[grep(paste(c(loci_to_remove),collapse="|"),loci_files_consensus_clean)]
+  loci_files_to_remove_contig <- loci_files_contig_clean[grep(paste(c(loci_to_remove),collapse="|"),loci_files_contig_clean)]
 }
 
 file.remove(files_to_remove_consensus)
@@ -215,11 +215,14 @@ for(locus in rownames(tab_snps_cl2b)){
 ### concatenate consensus files across all loci to lists per sample   ###
 #########################################################################
 
-samples_in <- samples
-if(length(c(failed_samples, outsamples_missing, outsamples_recovered_seq_length)) != 0){
-  samples_in <- samples[-which(samples %in% unique(c(names(failed_samples), names(outsamples_missing) , names(outsamples_recovered_seq_length))))]
+samples <- readLines(txt_file_with_list_of_accessions)
+
+# remove failed samples from list
+if(length(failed_samples) != 0){
+  samples <- samples[-which(samples %in% names(failed_samples))]
 }
 
+# collect all sequences
 
 if(contig=="supercontig"){
   for(sample in samples){
@@ -235,7 +238,7 @@ if(contig=="supercontig"){
     system(command_cat_loci_consensus)
     #for contig files (they cont contain the gene name , which makes it more complicated)
     if(write_gene_names_in_contig_sample_seqlist!="yes"){
-      command_cat_loci_contig <- paste("cat",file.path(path_to_hybpiper_results,sample,"/*",sample,"/sequences/FNA/*.FNA"),">",file.path(folder4seq_contig_samples_raw,paste(sample,"_hybpiper_raw.fasta",sep="")))
+      command_cat_loci_contig <- paste("cat",file.path(path_to_hybpiper_results,sample,"/*",sample,"/sequences/FNA/*.FNA"),">",file.path(folder4seq_contig_samples_raw,paste(sample,"_contig_raw.fasta",sep="")))
       system(command_cat_loci_contig)
     }else {
       dir.create(file.path(folder4seq_contig_samples_raw,"tmp"))
@@ -263,9 +266,9 @@ for(file in list.files(folder4seq_contig_samples_raw, full.names = T)){
 
 
 
-###########################################################################
-## removing loci from sample lists
-###########################################################################
+
+# remove samples (missing data, paralogs for all)
+###################################################
 
 ## copy all sequence lists to new folder before removing parts of it
 
@@ -280,10 +283,32 @@ file.copy(from=list.files(folder4seq_contig_samples_raw,full.names = T), to = fo
 system(paste("rename 's/_raw.fasta/.fasta/' ",folder4seq_contig_samples_clean,"/*raw.fasta -f", sep=""))
 
 
+
 ## remove all outlier loci (empty and high allele divergence) (cleaning step 1 and 2)
 sample_files_consensus_clean <- list.files(path = folder4seq_consensus_samples_clean, full.names = T )
 sample_files_contig_clean <- list.files(path = folder4seq_contig_samples_clean, full.names = T )
 
+
+samples_to_remove <-  unique(c(outsamples_missing , names(outsamples_recovered_seq_length)))
+
+if(length(samples_to_remove)==0){
+  samples_files_to_remove_consensus=""
+  samples_files_to_remove_contig=""
+} else {
+  samples_files_to_remove_consensus <- sample_files_consensus_clean[grep(paste(c(samples_to_remove),collapse="|"),sample_files_consensus_clean)]
+  samples_files_to_remove_contig <- sample_files_contig_clean[grep(paste(c(samples_to_remove),collapse="|"),sample_files_contig_clean)]
+}
+
+file.remove(samples_files_to_remove_consensus)
+file.remove(samples_files_to_remove_contig)
+
+
+samples_in <- samples
+if(length(c(outsamples_missing, outsamples_recovered_seq_length)) != 0){
+  samples_in <- samples_in[-which(samples %in% samples_to_remove)]
+}
+
+# remove outlier loci per sample in sample lists
 for(sample in samples_in){
   
   loci_to_remove <- vector()
