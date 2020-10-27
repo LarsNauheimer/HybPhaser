@@ -143,7 +143,7 @@ system(paste("rename 's/_raw.fasta/.fasta/' ",folder4seq_contig_loci_clean,"/*ra
 loci_files_consensus_clean <- list.files(path = folder4seq_consensus_loci_clean, full.names = T )
 loci_files_contig_clean <- list.files(path = folder4seq_contig_loci_clean, full.names = T )
 
-loci_to_remove <- c(names(failed_loci), outloci_missing, names(outloci_para_all))
+loci_to_remove <- c(failed_loci, outloci_missing, names(outloci_para_all))
 
 if(length(loci_to_remove)==0){
   loci_files_to_remove_consensus=""
@@ -166,7 +166,7 @@ for(locus in rownames(tab_snps_cl2b)){
   samples_to_remove <- vector()
   
   if(length(failed_samples) > 0 ){
-    samples_to_remove <- names(failed_samples)
+    samples_to_remove <- failed_samples
   } 
   
   if(length(outsamples_missing) > 0 ){
@@ -219,7 +219,7 @@ samples <- readLines(txt_file_with_list_of_accessions)
 
 # remove failed samples from list
 if(length(failed_samples) != 0){
-  samples <- samples[-which(samples %in% names(failed_samples))]
+  samples <- samples[-which(samples %in% failed_samples)]
 }
 
 # collect all sequences
@@ -314,7 +314,7 @@ for(sample in samples_in){
   loci_to_remove <- vector()
   
   if(length(failed_loci) > 0){
-    loci_to_remove <- names(failed_loci)
+    loci_to_remove <- failed_loci
   }
   
   if(length(outloci_missing) > 0){

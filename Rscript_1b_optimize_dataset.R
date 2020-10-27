@@ -107,10 +107,10 @@ for(i in 1:2){
   }
   par(mfrow=c(2,3))
   
-  boxplot(seq_per_sample_prop, main=paste("Samples: prop. of",nloci,"loci recovered"), xlab=paste("mean:",round(mean(seq_per_sample_prop),2), " | median:", round(median(seq_per_sample_prop),2)," | threshold:",remove_samples_with_less_than_this_propotion_of_loci_recovered," (",length(outsamples_missing_loci)," out)",sep=""))
+  boxplot(seq_per_sample_prop, main=paste("Samples: prop. of",nloci,"loci recovered"), xlab=paste("mean:",round(mean(seq_per_sample_prop, na.rm = TRUE),2), " | median:", round(median(seq_per_sample_prop, na.rm = TRUE),2)," | threshold:",remove_samples_with_less_than_this_propotion_of_loci_recovered," (",length(outsamples_missing_loci)," out)",sep=""))
   abline(h=remove_samples_with_less_than_this_propotion_of_loci_recovered, lty=2, col="red")
   
-  boxplot(prop_target_length_per_sample, main=paste("Samples: prop. of target sequence length recovered"), xlab=paste("mean:",round(mean(prop_target_length_per_sample),2)," | median:", round(median(prop_target_length_per_sample),2)," | threshold:",remove_samples_with_less_than_this_propotion_of_target_sequence_length_recovered," (",length(outsamples_missing_target)," out)",sep=""))
+  boxplot(prop_target_length_per_sample, main=paste("Samples: prop. of target sequence length recovered"), xlab=paste("mean:",round(mean(prop_target_length_per_sample, na.rm = TRUE),2)," | median:", round(median(prop_target_length_per_sample, na.rm = TRUE),2)," | threshold:",remove_samples_with_less_than_this_propotion_of_target_sequence_length_recovered," (",length(outsamples_missing_target)," out)",sep=""))
   abline(h=remove_samples_with_less_than_this_propotion_of_target_sequence_length_recovered, lty=2, col="red")
   
   plot(prop_target_length_per_sample,seq_per_sample_prop, main = "Prop. of loci vs\n prop. of target length", xlab = "Prop. of target length", ylab= "Prop. of loci" )
@@ -118,10 +118,10 @@ for(i in 1:2){
   abline(v=remove_samples_with_less_than_this_propotion_of_target_sequence_length_recovered, lty=2, col="red")
   
   
-  boxplot(seq_per_locus_prop, main=paste("Loci: prop. of",nsamples,"samples recovered"), xlab=paste("mean:",round(mean(seq_per_locus_prop),2), " | median:", round(median(seq_per_locus_prop),2)," | threshold:",remove_loci_with_less_than_this_propotion_of_samples_recovered," (",length(outloci_missing_samples)," out)",sep=""))
+  boxplot(seq_per_locus_prop, main=paste("Loci: prop. of",nsamples,"samples recovered"), xlab=paste("mean:",round(mean(seq_per_locus_prop, na.rm = TRUE),2), " | median:", round(median(seq_per_locus_prop, na.rm = TRUE),2)," | threshold:",remove_loci_with_less_than_this_propotion_of_samples_recovered," (",length(outloci_missing_samples)," out)",sep=""))
   abline(h=remove_loci_with_less_than_this_propotion_of_samples_recovered, lty=2, col="red")
   
-  boxplot(prop_target_length_per_locus, main=paste("Loci: prop. of target sequence length recovered"), xlab=paste("mean:",round(mean(prop_target_length_per_locus),2)," | median:", round(median(prop_target_length_per_locus),2)," | threshold:",remove_loci_with_less_than_this_propotion_of_target_sequence_length_recovered," (",length(outloci_missing_target)," out)",sep=""))
+  boxplot(prop_target_length_per_locus, main=paste("Loci: prop. of target sequence length recovered"), xlab=paste("mean:",round(mean(prop_target_length_per_locus, na.rm = TRUE),2)," | median:", round(median(prop_target_length_per_locus, na.rm = TRUE),2)," | threshold:",remove_loci_with_less_than_this_propotion_of_target_sequence_length_recovered," (",length(outloci_missing_target)," out)",sep=""))
   abline(h=remove_loci_with_less_than_this_propotion_of_target_sequence_length_recovered, lty=2, col="red")
   
   plot(prop_target_length_per_locus,seq_per_locus_prop, main = "Prop. of samples vs\n prop. of target length", xlab = "Prop. of target length", ylab= "Prop. of samples" )
@@ -224,14 +224,14 @@ if(length(outloci_para_all)==0) {tab_snps_cl2a <- tab_snps_cl1
 
 tab_snps_cl2b <- tab_snps_cl2a
 
-if(!exists("remove_loremove_outlier_loci_for_each_sampleci_for_all_samples_with_more_than_this_mean_proportion_of_SNPs")) {remove_loremove_outlier_loci_for_each_sampleci_for_all_samples_with_more_than_this_mean_proportion_of_SNPs <- "no"}
+if(!exists("remove_loci_for_all_samples_with_more_than_this_mean_proportion_of_SNPs")) {remove_loci_for_all_samples_with_more_than_this_mean_proportion_of_SNPs <- "no"}
 
-if(remove_loremove_outlier_loci_for_each_sampleci_for_all_samples_with_more_than_this_mean_proportion_of_SNPs == "yes" ){
+if(remove_loci_for_all_samples_with_more_than_this_mean_proportion_of_SNPs == "yes" ){
   
   # generate tables without zeros to count only loci with SNPs
-  tab_snps_cl2a_nozero <-tab_snps_cl2a
+  tab_snps_cl2a_nozero <- tab_snps_cl2a
   tab_snps_cl2a_nozero[which(tab_snps_cl2a_nozero==0)] <- NA
-  tab_snps_cl2b_nozero <-tab_snps_cl2a_nozero
+  tab_snps_cl2b_nozero <- tab_snps_cl2a_nozero
   
   outloci_para_each <- list()
   outloci_para_each <- sapply(colnames(tab_snps_cl2a),function(x) NULL)
@@ -270,7 +270,7 @@ for (i in 1:2){
   }
   boxplot(as.data.frame(tab_snps_cl2a_nozero[,order(colMeans(as.matrix(tab_snps_cl2a_nozero), na.rm = T))]), 
           horizontal=T, las=1, yaxt='n',
-          main="Boxplots for Proportion of SNPs for all loci of each sample\nwithout removal of outliers (ignoring loci without SNPs)",
+          main="Proportions of SNPs for all loci per sample\n(without loci that have no SNPs)",
           ylab="Samples",
           xlab="Proportion of SNPs",
           outcol=outliers_color)
@@ -311,6 +311,5 @@ saveRDS(tab_length_cl2b,file=file.path(output_Robjects,"Table_consensus_length_c
 
 saveRDS(outloci_missing,file=file.path(output_Robjects,"outloci_missing.Rds"))
 saveRDS(outsamples_missing,file=file.path(output_Robjects,"outsamples_missing.Rds"))
-saveRDS(outsamples_recovered_seq_length,file=file.path(output_Robjects,"outsamples_recovered_seq_length.Rds"))
 saveRDS(outloci_para_all,file=file.path(output_Robjects,"outloci_para_all.Rds"))
 saveRDS(outloci_para_each,file=file.path(output_Robjects,"outloci_para_each.Rds"))
