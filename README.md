@@ -4,7 +4,9 @@ HybPhaser was developed to deal with hybrids (and polyploids) in target capture 
 
 It detects hybrids by measuring heterozygosity in the dataset and phase hybrid accessions by separating reads according to similarity with selected taxa that represent parental clades. 
 
-HybPhaser is built as an extension to the efficient assembly pipeline HybPiper. 
+HybPhaser is built as an extension to the assembly pipeline HybPiper using its output. 
+
+A preprint of the submitted manuscript describing the application of HybPhaser is available at bioRxiv: https://www.biorxiv.org/content/10.1101/2020.10.27.354589v1
 
 
 ## Installation
