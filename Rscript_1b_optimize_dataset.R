@@ -224,9 +224,9 @@ if(length(outloci_para_all)==0) {tab_snps_cl2a <- tab_snps_cl1
 
 tab_snps_cl2b <- tab_snps_cl2a
 
-if(!exists("remove_loci_for_all_samples_with_more_than_this_mean_proportion_of_SNPs")) {remove_loci_for_all_samples_with_more_than_this_mean_proportion_of_SNPs <- "no"}
+if(!exists("remove_outlier_loci_for_each_sample")) {remove_outlier_loci_for_each_sample <- "no"}
 
-if(remove_loci_for_all_samples_with_more_than_this_mean_proportion_of_SNPs == "yes" ){
+if(remove_outlier_loci_for_each_sample == "yes" ){
   
   # generate tables without zeros to count only loci with SNPs
   tab_snps_cl2a_nozero <- tab_snps_cl2a

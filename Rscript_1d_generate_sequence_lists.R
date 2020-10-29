@@ -3,11 +3,9 @@
 #############################################
 
 if(contig=="supercontig"){
-  contig_name <- "_supercontig"
-  contig_consensus_name <- "supercontig-"
+  contig_name <- "supercontig-"
 } else {
   contig_name <- ""
-  contig_consensus_name <- ""
 }
 
 targets <- read.fasta(fasta_file_with_targets, as.string=TRUE, set.attributes = FALSE)
@@ -153,8 +151,8 @@ if(length(loci_to_remove)==0){
   loci_files_to_remove_contig <- loci_files_contig_clean[grep(paste(c(loci_to_remove),collapse="|"),loci_files_contig_clean)]
 }
 
-file.remove(files_to_remove_consensus)
-file.remove(files_to_remove_contig)
+file.remove(loci_files_to_remove_consensus)
+file.remove(loci_files_to_remove_contig)
 
 
 
@@ -185,12 +183,12 @@ for(locus in rownames(tab_snps_cl2b)){
   if(length(samples_to_remove) !=0 ){
     
     # consensus
-    locus_consensus_raw <- readLines(file.path(folder4seq_consensus_loci_clean,paste(locus,"_",contig_consensus_name,"consensus.fasta",sep="")))
+    locus_consensus_raw <- readLines(file.path(folder4seq_consensus_loci_clean,paste(locus,"_",contig_name,"consensus.fasta",sep="")))
     lines_with_samplename <- grep(paste(samples_to_remove,collapse="|"),locus_consensus_raw)
     if(length(lines_with_samplename) !=0){
       lines_to_remove <- c(lines_with_samplename,lines_with_samplename+1)
       locus_file_red <- locus_consensus_raw[-lines_to_remove]
-      conn <- file(file.path(folder4seq_consensus_loci_clean,paste(locus,"_",contig_consensus_name,"consensus.fasta",sep="")))
+      conn <- file(file.path(folder4seq_consensus_loci_clean,paste(locus,"_",contig_name,"consensus.fasta",sep="")))
       writeLines(locus_file_red, conn)
       close(conn)
     }
@@ -334,7 +332,7 @@ for(sample in samples_in){
     
     
     #consensus
-    consensus_file2clean <- file.path(folder4seq_consensus_samples_clean, paste(sample,"_",contig_consensus_name,"consensus.fasta",sep=""))
+    consensus_file2clean <- file.path(folder4seq_consensus_samples_clean, paste(sample,"_",contig_name,"consensus.fasta",sep=""))
     samples_consensus_raw <- readLines(consensus_file2clean)
     lines_with_lociname <- grep(paste(loci_to_remove,collapse="|"),samples_consensus_raw)
     if(length(lines_with_lociname) !=0){
@@ -346,7 +344,7 @@ for(sample in samples_in){
     }
     
     #contig
-    contig_file2clean <- file.path(folder4seq_contig_samples_clean, paste(sample,contig_name,"_contig.fasta",sep=""))
+    contig_file2clean <- file.path(folder4seq_contig_samples_clean, paste(sample,"_",contig_name,"contig.fasta",sep=""))
     samples_contig_raw <- readLines(contig_file2clean)
     lines_with_lociname <- grep(paste(loci_to_remove,collapse="|"),samples_contig_raw)
     if(length(lines_with_lociname) !=0){
