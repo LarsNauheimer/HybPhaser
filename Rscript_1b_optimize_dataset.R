@@ -3,7 +3,6 @@
 ################################################################################
 
 # input
-source(file.path(path_to_config_scripts,"Configure_1_SNPs_assessment.R"))
 
 tab_snps <- readRDS(file=file.path(output_Robjects,"Table_SNPs_raw.Rds"))
 tab_length <- readRDS(file=file.path(output_Robjects,"Table_consensus_length.Rds"))

@@ -1,0 +1,4 @@
+sample,ref1,abb1,ref2,abb2,ref3,abb3
+some_species1,species_in_one_clade,cl1,species_in_another_clade,cl2,,
+some_species2,species_in_one_clade,cl1,species_in_different_clade,cldif,species_in_another_clade,another
+some_species3,species_in_this_clade,clthis,species_in_this_clade,clthis,,
