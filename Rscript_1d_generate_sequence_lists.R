@@ -217,7 +217,7 @@ samples <- readLines(txt_file_with_list_of_accessions)
 
 # remove failed samples from list
 if(length(failed_samples) != 0){
-  samples <- samples[-which(samples %in% failed_samples)]
+  samples <- samples[-which(samples %in% names(failed_samples))]
 }
 
 # collect all sequences
@@ -226,7 +226,7 @@ if(contig=="supercontig"){
   for(sample in samples){
     command_cat_loci_consensus <- paste("cat",file.path(path_to_hybpiper_results,sample,"/*",sample,"/sequences/remapping/*_supercontig-consensus.fasta"),">",file.path(folder4seq_consensus_samples_raw,paste(sample,"_supercontig-consensus_raw.fasta",sep="")))
     system(command_cat_loci_consensus)
-    command_cat_loci_contig <- paste("cat",file.path(path_to_hybpiper_results,sample,"/*",sample,"/sequences/intron/*_supercontig.fasta"),">",file.path(folder4seq_contig_samples_raw,paste(sample,"_contig_supercontig_raw.fasta",sep="")))
+    command_cat_loci_contig <- paste("cat",file.path(path_to_hybpiper_results,sample,"/*",sample,"/sequences/intron/*_supercontig.fasta"),">",file.path(folder4seq_contig_samples_raw,paste(sample,"_supercontig-contig_raw.fasta",sep="")))
     system(command_cat_loci_contig)
   } 
 } else {
@@ -316,7 +316,7 @@ for(sample in samples_in){
   }
   
   if(length(outloci_missing) > 0){
-    loci_to_remove <- c(loci_to_remove, names(outloci_missing))
+    loci_to_remove <- c(loci_to_remove, outloci_missing)
   }
   
   if(length(outloci_para_all) > 0){
@@ -324,11 +324,11 @@ for(sample in samples_in){
   }
   
   if(length(grep(sample,names(outloci_para_each))) > 0 ){
-    loci_to_remove <- c(loci_to_remove, outloci_para_each[[which(names(outloci_para_each) %in% sample)]])
+    loci_to_remove <- c(loci_to_remove, names(outloci_para_each[[which(names(outloci_para_each) %in% sample)]]))
   }
   
   
-  if(length(samples_to_remove)!=0){
+  if(length(loci_to_remove)!=0){
     
     
     #consensus

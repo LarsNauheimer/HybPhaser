@@ -42,7 +42,7 @@ if(read_type_4phasing == "paired-end"){
     read_file_1 <- reads[grep(paste(prep_phasing[i,1],ID_read_pair1,sep=""),reads)]
     read_file_2 <- reads[grep(paste(prep_phasing[i,1],ID_read_pair2,sep=""),reads)]
     
-    phasing_command[i] <- paste(path_to_bbmap_executables,"bbsplit.sh ambiguous=all ambiguous2=all threads=",no_of_threads_phasing," ",ref_command[i], " in=",read_file_1," in2=",read_file_2," basename=",folder_for_phased_reads,prep_phasing[i,1],"_to_%.fastq", " refstats=",folder_for_phasing_stats,prep_phasing[i,1],"_phasing-stats.txt", sep="")
+    phasing_command[i] <- paste(path_to_bbmap_executables,"bbsplit.sh ambiguous=all ambiguous2=all threads=",no_of_threads_phasing," ",ref_command[i], " in=",read_file_1," in2=",read_file_2," basename=",folder_for_phased_reads,"/",prep_phasing[i,1],"_to_%.fastq", " refstats=",folder_for_phasing_stats,"/",prep_phasing[i,1],"_phasing-stats.txt", sep="")
     
   }  
 
@@ -54,7 +54,7 @@ if(read_type_4phasing == "paired-end"){
     
     if(length(read_file)>1) { print("ERROR: multiple single end reads are selected!")}
     
-    phasing_command[i] <- paste(path_to_bbmap_executables,"bbsplit.sh ambiguous=all ambiguous2=all threads=",no_of_threads_phasing," ",ref_command[i], " in=",read_file, " basename=",folder_for_phased_reads,prep_phasing[i,1],"_to_%.fastq", " refstats=",folder_for_phasing_stats,prep_phasing[i,1],"_phasing-stats.txt", sep="")
+    phasing_command[i] <- paste(path_to_bbmap_executables,"bbsplit.sh ambiguous=all ambiguous2=all threads=",no_of_threads_phasing," ",ref_command[i], " in=",read_file, " basename=",folder_for_phased_reads,"/",prep_phasing[i,1],"_to_%.fastq", " refstats=",folder_for_phasing_stats,"/",prep_phasing[i,1],"_phasing-stats.txt", sep="")
     
   }    
 
