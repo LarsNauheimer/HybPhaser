@@ -18,7 +18,7 @@ outloci_para_all <- readRDS(file=file.path(output_Robjects,"outloci_para_all.Rds
 outloci_para_each <- readRDS(file=file.path(output_Robjects,"outloci_para_each.Rds"))
 tab_snps_cl2b <- readRDS(file=file.path(output_Robjects,"Table_SNPs_cleaned.Rds"))
 
-output_sequences <- file.path(path_for_HybPhaser_output,"sequence_lists/")
+output_sequences <- file.path(path_for_HybPhaser_output,"sequence_lists")
 
 
 #############################################
@@ -171,10 +171,6 @@ for(locus in rownames(tab_snps_cl2b)){
     samples_to_remove <-  c(samples_to_remove, names(outsamples_missing))
   } 
   
-  if(length(outsamples_recovered_seq_length) > 0 ){
-    samples_to_remove <- c(samples_to_remove, names(outsamples_recovered_seq_length))
-  } 
-  
   if(length(grep(locus,outloci_para_each)) >0 ){
     samples_to_remove <- c(samples_to_remove, names(outloci_para_each[grep(locus,outloci_para_each)]))
   }
@@ -287,14 +283,12 @@ sample_files_consensus_clean <- list.files(path = folder4seq_consensus_samples_c
 sample_files_contig_clean <- list.files(path = folder4seq_contig_samples_clean, full.names = T )
 
 
-samples_to_remove <-  unique(c(outsamples_missing , names(outsamples_recovered_seq_length)))
-
-if(length(samples_to_remove)==0){
+if(length(outsamples_missing)==0){
   samples_files_to_remove_consensus=""
   samples_files_to_remove_contig=""
 } else {
-  samples_files_to_remove_consensus <- sample_files_consensus_clean[grep(paste(c(samples_to_remove),collapse="|"),sample_files_consensus_clean)]
-  samples_files_to_remove_contig <- sample_files_contig_clean[grep(paste(c(samples_to_remove),collapse="|"),sample_files_contig_clean)]
+  samples_files_to_remove_consensus <- sample_files_consensus_clean[grep(paste(c(outsamples_missing),collapse="|"),sample_files_consensus_clean)]
+  samples_files_to_remove_contig <- sample_files_contig_clean[grep(paste(c(outsamples_missing),collapse="|"),sample_files_contig_clean)]
 }
 
 file.remove(samples_files_to_remove_consensus)
@@ -303,7 +297,7 @@ file.remove(samples_files_to_remove_contig)
 
 samples_in <- samples
 if(length(c(outsamples_missing, outsamples_recovered_seq_length)) != 0){
-  samples_in <- samples_in[-which(samples %in% samples_to_remove)]
+  samples_in <- samples_in[-which(samples %in% outsamples_missing)]
 }
 
 # remove outlier loci per sample in sample lists
