@@ -61,3 +61,17 @@ remove_loci_for_all_samples_with_more_than_this_mean_proportion_of_SNPs = "outli
 # "yes" will remove for each samples loci that have a higher proportion of SNPs than 1.5*IQR (interquartile range) above the 3rd quartile
 remove_outlier_loci_for_each_sample = "yes"       # "yes" or "no"
 
+
+
+### Generating sequence lists
+
+# HybPhaser collects sequences from the HybPiper folders to generate sequence lists using the unix cat command for each locus and also each sample.
+# Due to the lack of gene names in the normal contig sequences (not the supercontigs) this is not possible 
+# for the generation of sequence lists for each samples of the normal denovo contigs. 
+# This is circumvented by a solution using find, generating temporary files, renaming the sequence names in each file and then collating them. 
+#
+# If you do not need the gene names in the sequence lists for denovo contigs per sample and want to save time, change the next variable to"no"!
+
+write_gene_names_in_contig_sample_seqlist = "yes"
+
+
