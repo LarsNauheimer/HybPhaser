@@ -29,9 +29,8 @@ if(file_with_loci_excluded == "") {
 } else {
   loci2exclude <- readLines(file_with_loci_excluded)
   loci2exclude <- gsub(" *$","",loci2exclude)   # removing trailing spaces
+  loci2include <- loci2include[-which(loci2include %in% loci2exclude)]
 }
-loci2include <- loci2include[-which(loci2include %in% loci2exclude)]
-
 
 
 # copy files from normal seq lists if in the list of loci to include
