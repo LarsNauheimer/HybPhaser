@@ -174,13 +174,14 @@ loci_cl1_colmeans_median <- round(median(loci_cl1_colmeans),4)
 
 # applying chosen threshold
 if (length(remove_loci_for_all_samples_with_more_than_this_mean_proportion_of_SNPs) == 0 || remove_loci_for_all_samples_with_more_than_this_mean_proportion_of_SNPs == "none"){
-  threshold_value <- 0
+  outloci_para_all <- vector()
 } else if (remove_loci_for_all_samples_with_more_than_this_mean_proportion_of_SNPs == "outliers"){
   threshold_value <- 1.5*IQR(loci_cl1_colmeans, na.rm = TRUE )+quantile(loci_cl1_colmeans, na.rm = TRUE )[4]
+  outloci_para_all <- loci_cl1_colmeans[which(loci_cl1_colmeans > threshold_value)]
 } else {
   threshold_value <- remove_loci_for_all_samples_with_more_than_this_mean_proportion_of_SNPs
+  outloci_para_all <- loci_cl1_colmeans[which(loci_cl1_colmeans > threshold_value)]
 }
-outloci_para_all <- loci_cl1_colmeans[which(loci_cl1_colmeans > threshold_value)]
 
 # color outliers red
 colour_outparaall <- rep("black",nloci_cl1)
