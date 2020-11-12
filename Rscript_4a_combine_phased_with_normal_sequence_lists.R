@@ -83,7 +83,9 @@ if(exchange_phased_with_not_phased_samples=="yes"){
 }   
 
 # remove excluded samples from the list of included samples
-samples2include <- samples2include[-which(samples2include %in% c(notphased2remove,samples2exclude))]
+if(length(c(notphased2remove,samples2exclude))>0){
+  samples2include <- samples2include[-which(samples2include %in% c(notphased2remove,samples2exclude))]
+}
 
 
 # remove excluded samples from the sequences lists
