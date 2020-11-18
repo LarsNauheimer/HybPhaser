@@ -57,6 +57,12 @@ remove_loci_with_less_than_this_propotion_of_target_sequence_length_recovered = 
 # "outliers" will remove all loci that have more than 1.5*IQR (interquartile range) above the 3rd quartile of mean SNPs. 
 remove_loci_for_all_samples_with_more_than_this_mean_proportion_of_SNPs = "outliers"   # any number between 0 and 1 or "outliers" 
 
+# or alternatively remove all loci based on a list of loci in a text file (one line per locus)
+# this can be used for the processing a subset of accessions and the list of paralogs from another analysis should be imported  (e.g. of phased accessions)
+# OPTIONAL! Using "" will result in applying previous selected mode or threshold
+file_with_putative_paralogs_to_remove_for_all_samples = ""
+
+
 # set whether outlier loci are to be removed per sample
 # "yes" will remove for each samples loci that have a higher proportion of SNPs than 1.5*IQR (interquartile range) above the 3rd quartile
 remove_outlier_loci_for_each_sample = "yes"       # "yes" or "no"
@@ -72,6 +78,5 @@ remove_outlier_loci_for_each_sample = "yes"       # "yes" or "no"
 #
 # If you do not need the gene names in the sequence lists for denovo contigs per sample and want to save time, change the next variable to"no"!
 
-write_gene_names_in_contig_sample_seqlist = "yes"
-
+write_gene_names_in_contig_sample_seqlist = "no"
 
