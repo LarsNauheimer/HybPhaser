@@ -164,11 +164,11 @@ for(locus in rownames(tab_snps_cl2b)){
   samples_to_remove <- vector()
   
   if(length(failed_samples) > 0 ){
-    samples_to_remove <- failed_samples
+    samples_to_remove <- names(failed_samples)
   } 
   
   if(length(outsamples_missing) > 0 ){
-    samples_to_remove <-  c(samples_to_remove, names(outsamples_missing))
+    samples_to_remove <-  unique(c(samples_to_remove, outsamples_missing))
   } 
   
   if(length(grep(locus,outloci_para_each)) >0 ){
