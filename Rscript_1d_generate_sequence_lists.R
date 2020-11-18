@@ -141,7 +141,7 @@ system(paste("rename 's/_raw.fasta/.fasta/' ",folder4seq_contig_loci_clean,"/*ra
 loci_files_consensus_clean <- list.files(path = folder4seq_consensus_loci_clean, full.names = T )
 loci_files_contig_clean <- list.files(path = folder4seq_contig_loci_clean, full.names = T )
 
-loci_to_remove <- c(failed_loci, outloci_missing, names(outloci_para_all))
+loci_to_remove <- c(failed_loci, outloci_missing, outloci_para_all)
 
 if(length(loci_to_remove)==0){
   loci_files_to_remove_consensus=""
@@ -314,7 +314,7 @@ for(sample in samples_in){
   }
   
   if(length(outloci_para_all) > 0){
-    loci_to_remove <- c(loci_to_remove, names(outloci_para_all))
+    loci_to_remove <- c(loci_to_remove, outloci_para_all)
   }
   
   if(length(grep(sample,names(outloci_para_each))) > 0 ){
