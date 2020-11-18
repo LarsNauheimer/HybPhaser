@@ -3,6 +3,7 @@
 ################################################################################
 
 # input
+#source(file.path(path_to_config_scripts,"Configure_1_SNPs_assessment.R"))
 
 tab_snps <- readRDS(file=file.path(output_Robjects,"Table_SNPs_raw.Rds"))
 tab_length <- readRDS(file=file.path(output_Robjects,"Table_consensus_length.Rds"))
@@ -177,15 +178,23 @@ if (length(remove_loci_for_all_samples_with_more_than_this_mean_proportion_of_SN
   outloci_para_all <- vector()
 } else if (remove_loci_for_all_samples_with_more_than_this_mean_proportion_of_SNPs == "outliers"){
   threshold_value <- 1.5*IQR(loci_cl1_colmeans, na.rm = TRUE )+quantile(loci_cl1_colmeans, na.rm = TRUE )[4]
-  outloci_para_all <- loci_cl1_colmeans[which(loci_cl1_colmeans > threshold_value)]
+  outloci_para_all <- names(loci_cl1_colmeans[which(loci_cl1_colmeans > threshold_value)])
 } else {
   threshold_value <- remove_loci_for_all_samples_with_more_than_this_mean_proportion_of_SNPs
-  outloci_para_all <- loci_cl1_colmeans[which(loci_cl1_colmeans > threshold_value)]
+  outloci_para_all <- names(loci_cl1_colmeans[which(loci_cl1_colmeans > threshold_value)])
+}
+
+if(file_with_putative_paralogs_to_remove_for_all_samples != ""){
+  if(file.exists(file_with_putative_paralogs_to_remove_for_all_samples) == FALSE){
+    print("File with list of paralogs to remove for all samples does not exist. No paralogs will be removed.")
+  } else {
+  outloci_para_all <- readLines(file_with_putative_paralogs_to_remove_for_all_samples)
+  }
 }
 
 # color outliers red
 colour_outparaall <- rep("black",nloci_cl1)
-colour_outparaall[which(colnames(loci_cl1[,order(loci_cl1_colmeans)]) %in% names(outloci_para_all))] <- "red"
+colour_outparaall[which(colnames(loci_cl1[,order(loci_cl1_colmeans)]) %in% outloci_para_all)] <- "red"
 loci_cl1_order_means <- loci_cl1[,order(loci_cl1_colmeans)]
 
 
@@ -213,7 +222,7 @@ for(i in 1:2){
 
 # removing marked loci from table
 if(length(outloci_para_all)==0) {tab_snps_cl2a <- tab_snps_cl1
-} else { tab_snps_cl2a <- tab_snps_cl1[-which(rownames(tab_snps_cl1) %in%  names(outloci_para_all)),]}
+} else { tab_snps_cl2a <- tab_snps_cl1[-which(rownames(tab_snps_cl1) %in%  outloci_para_all),]}
 
 
 
@@ -284,7 +293,7 @@ cl2b_file <- file.path(output_cleaning,"2_Summary_Paralogs.txt")
 cat(file=cl2b_file,"Removal of putative paralog loci.")
 
 cat(file=cl2b_file,"Paralogs removed for all samples:\n", append = T)
-cat(file=cl2b_file, paste(names(outloci_para_all),"\n"), append = T)
+cat(file=cl2b_file, paste(outloci_para_all,"\n",sep=""), append = T)
 cat(file=cl2b_file,  "\n\n", append = T)
 
 if(length(outloci_para_each) > 0){
