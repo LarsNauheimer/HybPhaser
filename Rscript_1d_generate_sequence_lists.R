@@ -296,7 +296,7 @@ file.remove(samples_files_to_remove_contig)
 
 
 samples_in <- samples
-if(length(c(outsamples_missing, outsamples_recovered_seq_length)) != 0){
+if(length(outsamples_missing) != 0){
   samples_in <- samples_in[-which(samples %in% outsamples_missing)]
 }
 
