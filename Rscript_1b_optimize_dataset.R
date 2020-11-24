@@ -244,11 +244,12 @@ if(remove_outlier_loci_for_each_sample == "yes" ){
   
   outloci_para_each <- list()
   outloci_para_each <- sapply(colnames(tab_snps_cl2a),function(x) NULL)
-  
+  threshold_para_each <- outloci_para_each
   for(i in 1:length(colnames(tab_snps_cl2a))){
-    threshold_i <- 1.5*IQR(tab_snps_cl2a_nozero[,i], na.rm = TRUE )+quantile(tab_snps_cl2a_nozero[,i] , na.rm = TRUE)[4]
+    threshold_i <- 1.5*IQR(tab_snps_cl2a_nozero[,i], na.rm = TRUE ) + quantile(tab_snps_cl2a_nozero[,i] , na.rm = TRUE)[[4]]
     outlier_loci_i <- tab_snps_cl2a_nozero[which(tab_snps_cl2a_nozero[,i] > threshold_i),i]
     outloci_para_each[i] <- list(outlier_loci_i)
+    threshold_para_each[i] <- threshold_i
     
     tab_snps_cl2b[which(rownames(tab_snps_cl2a) %in% outlier_loci_i),i] <- NA
     tab_snps_cl2b_nozero[which(rownames(tab_snps_cl2b_nozero) %in% names(outlier_loci_i)),i] <- NA
@@ -291,16 +292,19 @@ for (i in 1:2){
 # write summary text file 
 cl2b_file <- file.path(output_cleaning,"2_Summary_Paralogs.txt")
 cat(file=cl2b_file,"Removal of putative paralog loci.")
-
 cat(file=cl2b_file,"Paralogs removed for all samples:\n", append = T)
-cat(file=cl2b_file, paste(outloci_para_all,"\n",sep=""), append = T)
+cat(file=cl2b_file, paste("Variable 'remove_loci_for_all_samples_with_more_than_this_mean_proportion_of_SNPs' set to: ", remove_loci_for_all_samples_with_more_than_this_mean_proportion_of_SNPs,"\n", sep=""), append=T)
+cat(file=cl2b_file, paste("Resulting threshold value (mean proportion of SNPs):", round(threshold_value,5),"\n"), append=T)
+cat(file=cl2b_file, paste(length(outloci_para_all)," loci were removed:\n",sep=""), append=T)
+cat(file=cl2b_file, paste(outloci_para_all,collapse=","), append = T)
 cat(file=cl2b_file,  "\n\n", append = T)
 
 if(length(outloci_para_each) > 0){
-  cat(file=cl2b_file, "Paralogs removed for each sample:\n", append=T) 
+  cat(file=cl2b_file, "Paralogs removed for each sample:\n", append=T)
+  cat(file=cl2b_file, "Sample\tthreshold\t#removed\tnames\n", append=T)
   for(i in 1:length(names(outloci_para_each))){
     cat(file=cl2b_file, names(outloci_para_each)[i],"\t", append=T)  
-    cat(file=cl2b_file, length(outloci_para_each[[i]]),outloci_para_each[[i]], sep="\t", append=T)  
+    cat(file=cl2b_file, round(threshold_para_each[[i]],5), length(outloci_para_each[[i]]), paste(names(outloci_para_each[[i]]),collapse=","), sep="\t", append=T)  
     cat(file=cl2b_file, "\n", append=T)  
   }
 } else{
