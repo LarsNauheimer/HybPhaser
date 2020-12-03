@@ -42,7 +42,9 @@ for(i in 1:length(stats_files)){
 tab_clade_assoc_norm <- tab_clade_assoc
 
 for(i in 1:length(rownames(tab_clade_assoc))){
-  tab_clade_assoc_norm[i,] <- tab_clade_assoc[i,] / tab_clade_assoc[i,grep(ref_samples$samples[i],colnames(tab_clade_assoc))]
+  if(length(grep(ref_samples$samples[i],colnames(tab_clade_assoc)))>0){
+    tab_clade_assoc_norm[i,] <- tab_clade_assoc[i,] / tab_clade_assoc[i,grep(ref_samples$samples[i],colnames(tab_clade_assoc))]
+  }
 }
 
 
