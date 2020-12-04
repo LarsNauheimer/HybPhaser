@@ -296,7 +296,7 @@ cat(file=cl2b_file,"Paralogs removed for all samples:\n", append = T)
 cat(file=cl2b_file, paste("Variable 'remove_loci_for_all_samples_with_more_than_this_mean_proportion_of_SNPs' set to: ", remove_loci_for_all_samples_with_more_than_this_mean_proportion_of_SNPs,"\n", sep=""), append=T)
 cat(file=cl2b_file, paste("Resulting threshold value (mean proportion of SNPs):", round(threshold_value,5),"\n"), append=T)
 cat(file=cl2b_file, paste(length(outloci_para_all)," loci were removed:\n",sep=""), append=T)
-cat(file=cl2b_file, paste(outloci_para_all,collapse=","), append = T)
+cat(file=cl2b_file, paste(outloci_para_all,collapse=", "), append = T)
 cat(file=cl2b_file,  "\n\n", append = T)
 
 if(length(outloci_para_each) > 0){
@@ -304,7 +304,7 @@ if(length(outloci_para_each) > 0){
   cat(file=cl2b_file, "Sample\tthreshold\t#removed\tnames\n", append=T)
   for(i in 1:length(names(outloci_para_each))){
     cat(file=cl2b_file, names(outloci_para_each)[i],"\t", append=T)  
-    cat(file=cl2b_file, round(threshold_para_each[[i]],5), length(outloci_para_each[[i]]), paste(names(outloci_para_each[[i]]),collapse=","), sep="\t", append=T)  
+    cat(file=cl2b_file, round(threshold_para_each[[i]],5), length(outloci_para_each[[i]]), paste(names(outloci_para_each[[i]]),collapse=", "), sep="\t", append=T)  
     cat(file=cl2b_file, "\n", append=T)  
   }
 } else{
