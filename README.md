@@ -1,5 +1,7 @@
 # HybPhaser
 
+Version 1.0
+
 HybPhaser was developed to deal with hybrids (and polyploids) in target capture datasets. 
 
 It detects hybrids by measuring heterozygosity in the dataset and phase hybrid accessions by separating reads according to similarity with selected taxa that represent parental clades. 
