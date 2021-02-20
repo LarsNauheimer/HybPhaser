@@ -1,6 +1,6 @@
 # HybPhaser
 
-Version 1.0
+Version 1.1
 
 HybPhaser was developed to deal with hybrids (and polyploids) in target capture datasets. 
 
@@ -24,11 +24,11 @@ Software dependencies
         ape (v5.4)
         sequinR (v4.2)
         stringR (v1.4)
-    BWA
-    SAMtools
-    Bcftools
-    BBSplit (BBMap v.38.87)
-    HybPiper (which has additional dependencies)
+    BWA (v0.0.17)
+    SAMtools (v1.9)
+    Bcftools (v1.9)
+    BBSplit (BBMap v38.87)
+    HybPiper (v1.3.1)
 
 ## Data Preparation
 
@@ -144,8 +144,9 @@ The R script “Rscript_1a_count_snps_in_consensus_seqs.R” is used to generate
 
 The script requires several variables to be set in the configuration script “Configure_1_SNPs_assessment.R”: 
 - `path_to_hybpiper_results`:  set path to the HybPiper base folder 
--  `path_for_HybPhaser_output`: set path for HybPhaser output`
+- `path_for_HybPhaser_output`: set path for HybPhaser output
 - `fasta_file_with_targets`: direct to the file with target sequences (baits) 
+- `target_file_format` : set whether target file is in DNA or AA format
 - `txt_file_with_list_of_accessions`: direct to a file that contains all sample names (one line per sample)
 - `contig`: select contig type, either “normal” for standard HybPiper assembly or “supercontig“ for the supercontig assembly, if intronerate.py was used to generate concatenated exon sequenes in HybPiper.
 
@@ -175,7 +176,7 @@ Genes with unusually high proportions of SNPs compared to other genes might have
 
 These variables can be configured in the configuration script:
 - `remove_loci_for_all_samples_with_more_than_this_mean_proportion_of_SNPs`: set threshold to remove loci with high mean proportions of SNPs across all samples. (e.g. 0.02 will remove all loci with an average of 2% or SNPS across all samples, or "outliers" will remove all loci that have more than 1.5*IQR (interquartile range) above the 3rd quartile of mean SNPs) 
-
+- `file_with_putative_paralogs_to_remove_for_all_samples`: alternatively all loci listed in a text file can be removed (e.g. when using a subset of the data and the same paralogs from another analysis should be removed)
 - `remove_outlier_loci_for_each_sample`: set whether outlier loci are to be removed per sample. "yes" will remove for each samples loci that have a higher proportion of SNPs than 1.5*IQR (interquartile range) above the 3rd quartile.
 
 
@@ -197,6 +198,13 @@ The R script “Rscript_1d_generate_sequence_lists.R” can be run from the wrap
 - contig_loci_clean
 
 These sequence lists can be aligned in order to perform phylogenetic analyses. 
+
+HybPhaser collects sequences from the HybPiper folders to generate sequence lists using the unix cat command for each locus and also each sample.
+However, this is not possible with the normal (non intron-supercontig) HybPiper de novo contigs per sample list because they lack the gene names in these sequences. 
+This can be circumvented by a more time consuming approach using the command find, generating temporary files, renaming the sequence names in each file and then collating them. 
+If you do not need the gene names in the sequence lists for denovo contigs per sample and want to save time, set the ariable to "no"!
+
+- `write_gene_names_in_contig_sample_seqlist`: set to "yes" if you want gene names in the samples file list for nomal de novo contigs
 
 
 # 2. Clade association
@@ -240,6 +248,7 @@ Variables to be set in the configuration script **Configure_2_Clade_association.
 -	`read_type_cladeassociation`: set whether reads are single or paired-end reads (single end, if you use the mapped-only reads) ["single-end" or "paired-end"]
 -	`ID_read_pair1`: if reads are paird-end, set unique part of filename including the ending (e.g. "_R1.fastq", "_R2.fastq"). If reads are single-end, you can ignore this.
 -	`ID_read_pair2`: similar to “ID_read_pair2”
+-	`file_with_samples_included` : set path to text file that contains a list of all samples included
 -	`path_to_reference_sequences`: set folder that contains the sequences of samples to select the clade reference sequences  (e.g., .../HybPiper_results/HybPhaser/sequences/consensus_samples_raw")
 -	`path_to_bbmap`: set folder to bbmap binaries, if bbmap is not in your path variable
 -	`no_of_threads`: set number of threads to be used for BBSplit [any number]
@@ -278,10 +287,10 @@ The script **Rscript_3a_prepare_phasing_script.R** can be used to generate the c
 **Variables to set in the configure script:**
 -	`path_to_HybPhaser_results`: set HybPhaser basefolder
 -	`path_to_read_files_phasing`: set path to read files that should be phased
--	`read_type_phasing`: set whether reads are paired-end or single-end ["paired-end" or “single-end"]
+-	`read_type_4phasing`: set whether reads are paired-end or single-end ["paired-end" or “single-end"]
 -	`ID_read_pair1`: if reads are paird-end, set unique part of filename including the ending (e.g. "_R1.fastq")
 -	`ID_read_pair2`: if reads are paird-end, set unique part of filename including the ending (e.g. "_R2.fastq")
--	`path_to_reference_sequences`: set folder for reference sequences (e.g. "/sequences/HybPhaser_samples_raw")
+-	`reference_sequence_folder`: set folder for reference sequences (e.g. "/sequences/HybPhaser_samples_raw")
 -	`path_to_bbmap_executables`: set path to bbmap executables (if not in path)
 -	`path_to_phasing_folder`: set path to phasing output folder
 -	`csv_file_with_phasing_prep_info`: set CSV file with accessions to phase and relevant references
@@ -306,19 +315,20 @@ The phased accessions can be assembled similar to the original accessions using 
 The R script **Rscript_4a_combine_phased_with_normal_sequence_lists.R** can be used to combine the phased with the normal sequence lists. It is possible to make subsets of the combined dataset using text files listing accession or loci to be included or excluded. 
 
 In the configuration script **Configure_4_Combining_sequence_lists.R** all required variables can be set:
--	`path_to_hybpiper_results`:  set HybPiper base folder
--	`path_to_hybpiper_results_phased`: set Hybpiper base folder of phased accessions
--	`fasta_file_with_targets`: set file with sequence targets
+-	`path_for_HybPhaser_output`:  set HybPhaser base folder
+-	`path_for_HybPhaser_phased_output`: set HybPhaser base folder of phased accessions
+-	`sequence_type`: set sequence list name (referring to the folder name in the sequences subfolder, e.g. "consensus_loci_clean" or "contig_loci_clean") 
+-	`contig`: set contig type ["normal" or "supercontig"]
+-	`name_of_sequence_list_output`: name the output sequence list folder
 -	`txt_file_with_list_of_accessions`: set file with a list of normal accessions (e.g. ".../hybpiper/namelist.txt")
 -	`txt_file_with_list_of_phased_accessions`: set file with list of phased accessions (e.g. ".../hybpiper_phased/namelist_phased.txt")
--	`sequence_type`:  set sequence list name to be combined (referring to the folder name in the sequences subfolder, e.g. "consensus_loci_clean" or "contig_loci_clean") 
--	`contig`: set contig type ["normal" or "supercontig"]
 -	`name_of_sequence_list_output`:  set name of the output sequence list 
 -	`file_with_samples_included`: define subset by listing accession to include (“” will include all)
 -	`file_with_samples_excluded`: define subset by listing accession to exclude (“” will exclude none)
+-	`file_with_loci_included`: define subset by listing loci to include (“” will include all)
 -	`file_with_loci_excluded`: define subset by listing loci to exclude (“” will exclude none)
 -	`exchange_phased_with_not_phased_samples`: set whether the non-phased accessions of the phased samples will be exchanged. ("yes" will exclude normal accessions, "no" will include normal and phased accessions from the same sample)
+-	`include_phased_seqlists_when_non_phased_locus_absent`: set to "tes" if loci that are only in the phased list but not in the non-phased list should be included
 
-The combined sequence lists are ready for alignment and phylogenetic analyses. 
 
 
