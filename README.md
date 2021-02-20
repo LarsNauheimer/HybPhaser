@@ -206,6 +206,7 @@ If you do not need the gene names in the sequence lists for denovo contigs per s
 
 - `write_gene_names_in_contig_sample_seqlist`: set to "yes" if you want gene names in the samples file list for nomal de novo contigs
 
+* Known issue: The script fails in RStuido with error messages when run fro the main script. However, the commends do not fail when run line by line from the script. 
 
 # 2. Clade association
 
