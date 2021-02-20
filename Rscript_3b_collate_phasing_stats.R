@@ -7,7 +7,10 @@ stats_files <- list.files(folder_for_phasing_stats)
 # generate empty table (ref_names x samples)
 
 used_reference_abbr <- unique(as.vector(t(phasing_prep[,1+1:((length(phasing_prep)-1)/2)*2])))
-used_reference_abbr <- used_reference_abbr[-which(is.na(used_reference_abbr)|used_reference_abbr=="")]
+if(length(which(is.na(used_reference_abbr)|used_reference_abbr==""))>0){
+  used_reference_abbr <- used_reference_abbr[-which(is.na(used_reference_abbr)|used_reference_abbr=="")]
+}
+
 
 
 tab_phasing_stats <- matrix(nrow = length(stats_files), ncol = length(used_reference_abbr))

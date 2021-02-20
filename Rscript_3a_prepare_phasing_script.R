@@ -4,7 +4,9 @@
 
 prep_phasing <- read.csv(csv_file_with_phasing_prep_info, header = T)
 prep_phasing[is.na(prep_phasing)] <- ""
-refseqs <- list.files(file.path(path_to_HybPhaser_results, "sequence_lists", reference_sequence_folder))
+
+path_to_reference_sequences <- file.path(path_to_HybPhaser_results, "sequence_lists", reference_sequence_folder)
+refseqs <- list.files(path_to_reference_sequences)
 refseqs_fullpath <- list.files(path_to_reference_sequences, full.names = T)
 reads <- list.files(path_to_read_files_phasing, full.names = T)
 

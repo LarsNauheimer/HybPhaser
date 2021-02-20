@@ -48,7 +48,15 @@ seq_per_sample_prop <- seq_per_sample/nloci
 # proportion of target sequence length
 
 tab_length <- readRDS(file=file.path(output_Robjects,"Table_consensus_length.Rds"))
-targets_length_all <- lengths(read.FASTA(fasta_file_with_targets))
+
+if(targets_file_format == "AA"){
+  targets_length_all <- lengths(read.FASTA(fasta_file_with_targets, type = "AA"))*3
+} else if(targets_file_format == "DNA"){
+  targets_length_all <- lengths(read.FASTA(fasta_file_with_targets))
+} else { 
+  print("Warning! Target file type not set properly. Should be 'DNA' or 'AA'!")
+}
+
 gene_names <- unique(gsub(".*-","",names(targets_length_all)))
 max_target_length <- vector()
 
@@ -178,19 +186,21 @@ if (length(remove_loci_for_all_samples_with_more_than_this_mean_proportion_of_SN
   outloci_para_all <- vector()
 } else if (remove_loci_for_all_samples_with_more_than_this_mean_proportion_of_SNPs == "outliers"){
   threshold_value <- 1.5*IQR(loci_cl1_colmeans, na.rm = TRUE )+quantile(loci_cl1_colmeans, na.rm = TRUE )[4]
-  outloci_para_all <- names(loci_cl1_colmeans[which(loci_cl1_colmeans > threshold_value)])
+  outloci_para_all_values <- loci_cl1_colmeans[which(loci_cl1_colmeans > threshold_value)]
+  outloci_para_all <- names(outloci_para_all_values)
+} else if (remove_loci_for_all_samples_with_more_than_this_mean_proportion_of_SNPs == "file"){
+  if(file.exists(file_with_putative_paralogs_to_remove_for_all_samples) == FALSE){
+    print("File with list of paralogs to remove for all samples does not exist.")
+  } else {
+    outloci_para_all <- readLines(file_with_putative_paralogs_to_remove_for_all_samples)
+    outloci_para_all_values <-loci_cl1_colmeans[which(names(loci_cl1_colmeans) %in% outloci_para_all)]
+  }
 } else {
   threshold_value <- remove_loci_for_all_samples_with_more_than_this_mean_proportion_of_SNPs
-  outloci_para_all <- names(loci_cl1_colmeans[which(loci_cl1_colmeans > threshold_value)])
+  outloci_para_all_values <- loci_cl1_colmeans[which(loci_cl1_colmeans > threshold_value)]
+  outloci_para_all <- names(outloci_para_all_values)
 }
 
-if(file_with_putative_paralogs_to_remove_for_all_samples != ""){
-  if(file.exists(file_with_putative_paralogs_to_remove_for_all_samples) == FALSE){
-    print("File with list of paralogs to remove for all samples does not exist. No paralogs will be removed.")
-  } else {
-  outloci_para_all <- readLines(file_with_putative_paralogs_to_remove_for_all_samples)
-  }
-}
 
 # color outliers red
 colour_outparaall <- rep("black",nloci_cl1)
@@ -211,7 +221,7 @@ for(i in 1:2){
   layout(matrix(c(1,2),2,2, byrow=TRUE), widths=c(5,1))
   
   barplot(sort(loci_cl1_colmeans), col=colour_outparaall, border = NA, las=2,
-          main=paste("Mean % SNPs across samples (n=",nsamples,") for each locus (n=", nloci,")", sep=""))
+          main=paste("Mean % SNPs across samples (n=",nsamples_cl1,") for each locus (n=", nloci_cl1,")", sep=""))
   abline(h=threshold_value, col="red", lty=2)
   boxplot(loci_cl1_colmeans, las=2)
   abline(h=threshold_value, col="red", lty=2)
@@ -294,10 +304,16 @@ cl2b_file <- file.path(output_cleaning,"2_Summary_Paralogs.txt")
 cat(file=cl2b_file,"Removal of putative paralog loci.")
 cat(file=cl2b_file,"Paralogs removed for all samples:\n", append = T)
 cat(file=cl2b_file, paste("Variable 'remove_loci_for_all_samples_with_more_than_this_mean_proportion_of_SNPs' set to: ", remove_loci_for_all_samples_with_more_than_this_mean_proportion_of_SNPs,"\n", sep=""), append=T)
-cat(file=cl2b_file, paste("Resulting threshold value (mean proportion of SNPs):", round(threshold_value,5),"\n"), append=T)
+if(remove_loci_for_all_samples_with_more_than_this_mean_proportion_of_SNPs=="file"){
+  cat(file=cl2b_file, paste("Loci listed in this file were removed: '", file_with_putative_paralogs_to_remove_for_all_samples,"'\n"), append=T)
+} else {
+  cat(file=cl2b_file, paste("Resulting threshold value (mean proportion of SNPs):", round(threshold_value,5),"\n"), append=T)
+}
 cat(file=cl2b_file, paste(length(outloci_para_all)," loci were removed:\n",sep=""), append=T)
-cat(file=cl2b_file, paste(outloci_para_all,collapse=", "), append = T)
+cat(file=cl2b_file, "locus\tmean_prop_SNPs\n", append=T)
+cat(file=cl2b_file, paste(paste(outloci_para_all, round(outloci_para_all_values,4), sep="\t"), collapse="\n"), append=T)
 cat(file=cl2b_file,  "\n\n", append = T)
+
 
 if(length(outloci_para_each) > 0){
   cat(file=cl2b_file, "Paralogs removed for each sample:\n", append=T)

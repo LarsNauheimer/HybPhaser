@@ -2,7 +2,7 @@
 # get names of stats files and from it get the name of samples 
 folder_bbsplit_stats <- file.path(path_to_clade_association_folder,"bbsplit_stats")
 stats_files <- list.files(folder_bbsplit_stats, "*_bbsplit-stats.txt")
-samples <- gsub("(_mapped.*|.fastq.*)","",stats_files)  # this removes everything after the first . in the name
+samples <- gsub("(_mapped.*|.fastq.*|_bbsplit-stats.*)","",stats_files)  # this removes everything after the first . in the name
 
 ref_samples <- read.csv(csv_file_with_clade_reference_names, header = T)
 colnames(ref_samples)[1] <- "samples"
@@ -56,7 +56,7 @@ ttab_clade_assoc_norm$samples <- rownames(ttab_clade_assoc_norm)
 
 # for better assessment, the summary table is added to the clade assessment results
 
-summary_het_ad_clean <- readRDS(file.path(path_to_HybPhaser_results,"R_objects", "Table_Summary.Rds"))
+summary_het_ad_clean <- readRDS(file.path(path_to_HybPhaser_results,"R_objects", "Summary_table.Rds"))
 tab_hetad_cladeasso <- merge(summary_het_ad_clean,ttab_clade_assoc, by="samples")
 tab_hetad_cladeasso_norm <- merge(summary_het_ad_clean,ttab_clade_assoc_norm, by="samples")
 

@@ -16,8 +16,15 @@ output_sequences <- file.path(path_for_HybPhaser_output,"sequence_lists/")
 #####################################################################################
 
 # getting targets and sample names
-targets <- read.fasta(fasta_file_with_targets, as.string=TRUE, set.attributes = FALSE)
+if(targets_file_format == "AA"){
+  targets <- read.fasta(fasta_file_with_targets, seqtype = "AA", as.string = TRUE, set.attributes = FALSE)
+  } else if(targets_file_format == "DNA"){
+    targets <- read.fasta(fasta_file_with_targets, seqtype = "DNA", as.string = TRUE, set.attributes = FALSE)
+  } else {
+    print("Warning! Target file type not set properly. Should be 'DNA' or 'AA'!")
+}
 targets_name <- unique(gsub(".*-","",labels(targets)))
+
 samples <- readLines(txt_file_with_list_of_accessions)
 
 

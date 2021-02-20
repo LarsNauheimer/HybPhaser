@@ -96,7 +96,7 @@ source(file.path(path_to_Rscripts,"Rscript_3b_collate_phasing_stats.R"))
 ### Configure Part 4
 
 # set all variables in the configuration script before running next line!
-source(file.path(path_to_config_scripts,"Configure_4_Combining_sequence_lists.R"))
+source(file.path(path_to_config_scripts,"Configure_4_Combining_phased_with_normal_sequence_lists.R"))
 
 
 ### Execute Part 4

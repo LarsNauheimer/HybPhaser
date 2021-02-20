@@ -1,4 +1,3 @@
-
 #############################################
 #############################################
 
@@ -12,13 +11,14 @@ targets <- read.fasta(fasta_file_with_targets, as.string=TRUE, set.attributes = 
 targets_name <- unique(gsub(".*-","",labels(targets)))
 samples <- readLines(txt_file_with_list_of_accessions)
 
+output_Robjects <- file.path(path_for_HybPhaser_output,"R_objects/")
+output_sequences <- file.path(path_for_HybPhaser_output,"sequence_lists/")
+
 outsamples_missing <- readRDS(file=file.path(output_Robjects,"outsamples_missing.Rds"))
 outloci_missing <- readRDS(file=file.path(output_Robjects,"outloci_missing.Rds"))
 outloci_para_all <- readRDS(file=file.path(output_Robjects,"outloci_para_all.Rds"))
 outloci_para_each <- readRDS(file=file.path(output_Robjects,"outloci_para_each.Rds"))
 tab_snps_cl2b <- readRDS(file=file.path(output_Robjects,"Table_SNPs_cleaned.Rds"))
-
-output_sequences <- file.path(path_for_HybPhaser_output,"sequence_lists")
 
 
 #############################################
@@ -33,7 +33,8 @@ folder4seq_contig_loci_clean <- file.path(output_sequences,"contig_loci_clean")
 folder4seq_contig_samples_raw <- file.path(output_sequences,"contig_samples_raw")
 folder4seq_contig_samples_clean <- file.path(output_sequences,"contig_samples_clean")
 
-unlink(output_sequences,recursive = T) # delete directory, if it existed in order to prevent errors
+unlink(c(folder4seq_consensus_loci_raw,folder4seq_consensus_loci_clean, folder4seq_consensus_samples_raw, folder4seq_consensus_samples_clean, folder4seq_contig_loci_raw, folder4seq_contig_loci_clean, folder4seq_contig_samples_raw, folder4seq_contig_samples_clean),recursive = T) # delete directory, if it existed in order to prevent errors
+
 dir.create(output_sequences, showWarnings = T)
 dir.create(folder4seq_consensus_loci_raw, showWarnings = T)
 dir.create(folder4seq_consensus_loci_clean, showWarnings = T)
@@ -155,24 +156,24 @@ file.remove(loci_files_to_remove_consensus)
 file.remove(loci_files_to_remove_contig)
 
 
+# get all samples to remove for all loci
+
+samples_to_remove_4all <- vector()
+
+if(length(failed_samples) > 0 ){
+  samples_to_remove_4all <- names(failed_samples)
+} 
+
+if(length(outsamples_missing) > 0 ){
+  samples_to_remove_4all <-  unique(c(samples_to_remove_4all, outsamples_missing))
+} 
 
 ## remove sequences in locus files from paralogs for each sample
 
-
 for(locus in rownames(tab_snps_cl2b)){
   
-  samples_to_remove <- vector()
-  
-  if(length(failed_samples) > 0 ){
-    samples_to_remove <- names(failed_samples)
-  } 
-  
-  if(length(outsamples_missing) > 0 ){
-    samples_to_remove <-  unique(c(samples_to_remove, outsamples_missing))
-  } 
-  
   if(length(grep(locus,outloci_para_each)) >0 ){
-    samples_to_remove <- c(samples_to_remove, names(outloci_para_each[grep(locus,outloci_para_each)]))
+    samples_to_remove <- c(samples_to_remove_4all, names(outloci_para_each[grep(locus,outloci_para_each)]))
   }
   
   
@@ -300,25 +301,27 @@ if(length(outsamples_missing) != 0){
   samples_in <- samples_in[-which(samples %in% outsamples_missing)]
 }
 
+
+loci_to_remove_4all <- vector()
+
+if(length(failed_loci) > 0){
+  loci_to_remove_4all <- names(failed_loci)
+}
+
+if(length(outloci_missing) > 0){
+  loci_to_remove_4all <- c(loci_to_remove_4all, outloci_missing)
+}
+
+if(length(outloci_para_all) > 0){
+  loci_to_remove_4all <- c(loci_to_remove_4all, outloci_para_all)
+}
+
 # remove outlier loci per sample in sample lists
 for(sample in samples_in){
   
-  loci_to_remove <- vector()
-  
-  if(length(failed_loci) > 0){
-    loci_to_remove <- failed_loci
-  }
-  
-  if(length(outloci_missing) > 0){
-    loci_to_remove <- c(loci_to_remove, outloci_missing)
-  }
-  
-  if(length(outloci_para_all) > 0){
-    loci_to_remove <- c(loci_to_remove, outloci_para_all)
-  }
   
   if(length(grep(sample,names(outloci_para_each))) > 0 ){
-    loci_to_remove <- c(loci_to_remove, names(outloci_para_each[[which(names(outloci_para_each) %in% sample)]]))
+    loci_to_remove <- c(loci_to_remove_4all, names(outloci_para_each[[which(names(outloci_para_each)%in% sample)]]))
   }
   
   
@@ -350,4 +353,3 @@ for(sample in samples_in){
     }
   }
 } 
-

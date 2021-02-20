@@ -3,7 +3,7 @@ if(!is.numeric(no_of_threads)){no_of_threads=1}
   
 if(read_type_cladeassociation == "paired-end"){
   
-  read_files <- list.files(path_to_read_files_cladeassociation, full.names = F, pattern = paste("*",ID_read_pair1,"*.fast.*", sep="") , include.dirs = F)  
+  read_files <- list.files(path_to_read_files_cladeassociation, full.names = F, pattern = paste("*",ID_read_pair1,".*", sep="") , include.dirs = F)  
 
 } else if(read_type_cladeassociation == "single-end") {
 
@@ -17,10 +17,14 @@ if(read_type_cladeassociation == "paired-end"){
 }
 
 if(file_with_samples_included == "" | file_with_samples_included == "none" ){
-} else {
+   } else {
   samples_in <- readLines(file_with_samples_included)
-  read_files <- read_files[match(samples_in,gsub(paste(ID_read_pair1,".fastq.*",sep=""),"",read_files))]
+  samples_in <- gsub("\\s*$","",samples_in)
+  read_files_noID <- gsub(ID_read_pair1,"",read_files)
+  read_files_noend <- gsub("[.]fast.*","",read_files_noID)
+  read_files <- read_files[match(samples_in, read_files_noend)]
 }
+
 
 read_files <- na.exclude(read_files)
 
@@ -64,6 +68,3 @@ system(command = paste("chmod +x",file.path(path_to_clade_association_folder,"ru
 if(run_bash_script_in_R=="yes"){
   system(command = file.path(path_to_clade_association_folder,"run_bbsplit4clade_association.sh"))
 }
-
-
-
