@@ -330,5 +330,5 @@ In the configuration script **Configure_4_Combining_sequence_lists.R** all requi
 -	`exchange_phased_with_not_phased_samples`: set whether the non-phased accessions of the phased samples will be exchanged. ("yes" will exclude normal accessions, "no" will include normal and phased accessions from the same sample)
 -	`include_phased_seqlists_when_non_phased_locus_absent`: set to "tes" if loci that are only in the phased list but not in the non-phased list should be included
 
-
+THe combined sequence lists are ready for alignment and phylogenetic analyses. 
 
