@@ -58,8 +58,8 @@ if(contig!="supercontig"){
   for(locus in targets_name){
     command_cat_consensus <- paste("cat",file.path(path_to_hybpiper_results,"*",locus,"*/sequences/remapping/",paste(locus,"_consensus.fasta",sep="")),">",file.path(folder4seq_consensus_loci_raw,paste(locus,"_consensus_raw.fasta",sep="")))
     command_cat_contig    <- paste("cat",file.path(path_to_hybpiper_results,"*",locus,"*/sequences/FNA/",paste(locus,".FNA",sep="")),">",file.path(folder4seq_contig_loci_raw,paste(locus,"_contig_raw.fasta",sep="")))
-    system(command_cat_consensus)
-    system(command_cat_contig)
+    system(command_cat_consensus, ignore.stderr = TRUE)
+    system(command_cat_contig, ignore.stderr = TRUE)
     command_remove_locus_in_seqnames_consensus <- (paste("sed -i 's/-",locus,"//g' ", file.path(folder4seq_consensus_loci_raw,paste(locus,"_consensus_raw.fasta",sep="")), sep=""))
     command_remove_locus_in_seqnames_contig <- (paste("sed -i 's/-",locus,"//g' ", file.path(folder4seq_contig_loci_raw,paste(locus,"_contig_raw.fasta",sep="")), sep=""))
     system(command_remove_locus_in_seqnames_consensus)
@@ -68,9 +68,9 @@ if(contig!="supercontig"){
 } else {
   for(locus in targets_name){
     command_cat_consensus <- paste("cat",file.path(path_to_hybpiper_results,"*",locus,"*/sequences/remapping/",paste(locus,"_supercontig-consensus.fasta",sep="")),">",file.path(folder4seq_consensus_loci_raw,paste(locus,"_supercontig-consensus_raw.fasta",sep="")))
-    system(command_cat_consensus)
+    system(command_cat_consensus, ignore.stderr = TRUE)
     command_cat_contig <- paste("cat",file.path(path_to_hybpiper_results,"*",locus,"*/sequences/intron/",paste(locus,"_supercontig.fasta",sep="")),">",file.path(folder4seq_contig_loci_raw,paste(locus,"_supercontig-contig_raw.fasta",sep="")))
-    system(command_cat_contig)
+    system(command_cat_contig, ignore.stderr = TRUE)
     command_remove_locus_in_seqnames_consensus <- (paste("sed -i 's/-",locus,"//g' ", file.path(folder4seq_consensus_loci_raw,paste(locus,"_supercontig-consensus_raw.fasta",sep="")), sep=""))
     system(command_remove_locus_in_seqnames_consensus) 
     command_remove_locus_in_seqnames_contig <- (paste("sed -i 's/-",locus,"//g' ", file.path(folder4seq_contig_loci_raw,paste(locus,"_supercontig-contig_raw.fasta",sep="")), sep=""))
@@ -142,7 +142,7 @@ system(paste("rename 's/_raw.fasta/.fasta/' ",folder4seq_contig_loci_clean,"/*ra
 loci_files_consensus_clean <- list.files(path = folder4seq_consensus_loci_clean, full.names = T )
 loci_files_contig_clean <- list.files(path = folder4seq_contig_loci_clean, full.names = T )
 
-loci_to_remove <- c(failed_loci, outloci_missing, outloci_para_all)
+loci_to_remove <- c(names(failed_loci), outloci_missing, outloci_para_all)
 
 if(length(loci_to_remove)==0){
   loci_files_to_remove_consensus=""
@@ -169,6 +169,7 @@ if(length(outsamples_missing) > 0 ){
 } 
 
 ## remove sequences in locus files from paralogs for each sample
+
 
 for(locus in rownames(tab_snps_cl2b)){
   
@@ -290,10 +291,11 @@ if(length(outsamples_missing)==0){
 } else {
   samples_files_to_remove_consensus <- sample_files_consensus_clean[grep(paste(c(outsamples_missing),collapse="|"),sample_files_consensus_clean)]
   samples_files_to_remove_contig <- sample_files_contig_clean[grep(paste(c(outsamples_missing),collapse="|"),sample_files_contig_clean)]
+  file.remove(samples_files_to_remove_consensus)
+  file.remove(samples_files_to_remove_contig)
 }
 
-file.remove(samples_files_to_remove_consensus)
-file.remove(samples_files_to_remove_contig)
+
 
 
 samples_in <- samples
@@ -353,3 +355,4 @@ for(sample in samples_in){
     }
   }
 } 
+

@@ -79,7 +79,7 @@ if(file_with_samples_excluded == ""){
 # removing unphased versions of phased samples, if that was selected
 if(exchange_phased_with_not_phased_samples=="yes"){
   phased_samples_base <- sub("_to_.*","",samples_include_phased)
-  notphased2remove <- samples[which(samples %in% phased_samples_base)]
+  notphased2remove <- samples2include[which(samples2include %in% phased_samples_base)]
 }   
 
 # remove excluded samples from the list of included samples

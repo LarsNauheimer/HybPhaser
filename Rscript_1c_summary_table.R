@@ -72,36 +72,28 @@ nrows <- length(tab_het_ad[,1])
 text_size <- (15+200/nrows)*text_size_mod
 
 
-pdf(file.path(output_assess,"Scatterplot_heterozygosity_vs_allele_divergence.pdf"), h=10,w=10)
+for(i in 1:2){
+  
+  if(i==1){
+    pdf(file.path(output_assess,"Scatterplot_heterozygosity_vs_allele_divergence.pdf"), h=10,w=10)
+  } else {
+    png(file.path(output_assess,"Scatterplot_heterozygosity_vs_allele_divergence.png"), h=1000,w=1000)
+  }
+  
   plot(tab_het_ad$allele_divergence,tab_het_ad$heterozygosity,
        xlab="Allele divergence [%]", ylab="Heterozygosity [%]", main="Heterozygosity vs allele divergence", las=1)
-dev.off()
-
-png(file.path(output_assess,"Scatterplot_heterozygosity_vs_allele_divergence.png"), h=1000,w=1000)
-  plot(tab_het_ad$allele_divergence,tab_het_ad$heterozygosity,
-       xlab="Allele divergence [%]", ylab="Heterozygosity [%]", main="Heterozygosity vs allele divergence",las=1)
-dev.off()
+  dev.off()
+}
 
 
-pdf(file.path(output_assess,"Scatterplot_heterozygosity_div_levels_vs_allele_divergence.pdf"), h=10,w=10)
-  par(mfrow=c(2,2))
-  plot(tab_het_ad$allele_divergence,tab_het_ad$heterozygosity,
-       xlab="Allele divergence [%]", ylab="Heterozygosity (0% SNPs) [%]", main="Heterozygosity (0% SNPs) vs allele divergence",las=1
-  )
-  plot(tab_het_ad$allele_divergence,tab_het_ad$`>0.5% SNPs`,
-       xlab="Allele divergence [%]", ylab="Heterozygosity (>0.5% SNPs) [%]", main="Heterozygosity (.0.5% SNPs) vs allele divergence",las=1
-  )
-  plot(tab_het_ad$allele_divergence,tab_het_ad$`>1% SNPs`,
-       xlab="Allele divergence [%]", ylab="Heterozygosity (>1% SNPs) [%]", main="Heterozygosity (>1% SNPs) vs allele divergence",las=1
-  )
-  plot(tab_het_ad$allele_divergence,tab_het_ad$`>2% SNPs`,
-       xlab="Allele divergence [%]", ylab="Heterozygosity (>2% SNPs) [%]", main="Heterozygosity (>2% SNPs) vs allele divergence",las=1
-  )
-  par(mfrow=c(1,1))
-dev.off()           
-
-
-png(file.path(output_assess,"Scatterplot_heterozygosity_div_levels_vs_allele_divergence.png"), h=1000,w=1000)
+for(i in 1:2){
+  
+  if(i==1){
+    pdf(file.path(output_assess,"Scatterplot_heterozygosity_div_levels_vs_allele_divergence.pdf"), h=10,w=10)
+  } else {
+    png(file.path(output_assess,"Scatterplot_heterozygosity_div_levels_vs_allele_divergence.png"), h=1000,w=1000)
+  }
+  
   par(mfrow=c(2,2))
   plot(tab_het_ad$allele_divergence,tab_het_ad$heterozygosity,
        xlab="Allele divergence [%]", ylab="Heterozygosity (0% SNPs) [%]", main="Heterozygosity (0% SNPs) vs allele divergence",las=1
@@ -116,5 +108,6 @@ png(file.path(output_assess,"Scatterplot_heterozygosity_div_levels_vs_allele_div
        xlab="Allele divergence [%]", ylab="Heterozygosity (>2% SNPs) [%]", main="Heterozygosity (>2% SNPs) vs allele divergence",las=1
   )
   par(mfrow=c(1,1))
-dev.off()
+  dev.off()
+}
 

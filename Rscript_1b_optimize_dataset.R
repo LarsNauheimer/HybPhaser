@@ -182,8 +182,9 @@ loci_cl1_colmeans_median <- round(median(loci_cl1_colmeans),4)
 
 
 # applying chosen threshold
-if (length(remove_loci_for_all_samples_with_more_than_this_mean_proportion_of_SNPs) == 0 || remove_loci_for_all_samples_with_more_than_this_mean_proportion_of_SNPs == "none"){
+if (length(remove_loci_for_all_samples_with_more_than_this_mean_proportion_of_SNPs) != 1 || remove_loci_for_all_samples_with_more_than_this_mean_proportion_of_SNPs == "none"){
   outloci_para_all <- vector()
+  threshold_value <- 1
 } else if (remove_loci_for_all_samples_with_more_than_this_mean_proportion_of_SNPs == "outliers"){
   threshold_value <- 1.5*IQR(loci_cl1_colmeans, na.rm = TRUE )+quantile(loci_cl1_colmeans, na.rm = TRUE )[4]
   outloci_para_all_values <- loci_cl1_colmeans[which(loci_cl1_colmeans > threshold_value)]
@@ -222,9 +223,9 @@ for(i in 1:2){
   
   barplot(sort(loci_cl1_colmeans), col=colour_outparaall, border = NA, las=2,
           main=paste("Mean % SNPs across samples (n=",nsamples_cl1,") for each locus (n=", nloci_cl1,")", sep=""))
-  abline(h=threshold_value, col="red", lty=2)
+  if(length(threshold_value)>0 && remove_loci_for_all_samples_with_more_than_this_mean_proportion_of_SNPs != "file"){abline(h=threshold_value, col="red", lty=2)}
   boxplot(loci_cl1_colmeans, las=2)
-  abline(h=threshold_value, col="red", lty=2)
+  if(length(threshold_value)>0 && remove_loci_for_all_samples_with_more_than_this_mean_proportion_of_SNPs != "file"){abline(h=threshold_value, col="red", lty=2)}
   
   dev.off()
 }
@@ -306,16 +307,21 @@ cat(file=cl2b_file,"Paralogs removed for all samples:\n", append = T)
 cat(file=cl2b_file, paste("Variable 'remove_loci_for_all_samples_with_more_than_this_mean_proportion_of_SNPs' set to: ", remove_loci_for_all_samples_with_more_than_this_mean_proportion_of_SNPs,"\n", sep=""), append=T)
 if(remove_loci_for_all_samples_with_more_than_this_mean_proportion_of_SNPs=="file"){
   cat(file=cl2b_file, paste("Loci listed in this file were removed: '", file_with_putative_paralogs_to_remove_for_all_samples,"'\n"), append=T)
+} else if(remove_loci_for_all_samples_with_more_than_this_mean_proportion_of_SNPs=="none"){
+  cat(file=cl2b_file,"None!\n", append = T)
 } else {
   cat(file=cl2b_file, paste("Resulting threshold value (mean proportion of SNPs):", round(threshold_value,5),"\n"), append=T)
 }
-cat(file=cl2b_file, paste(length(outloci_para_all)," loci were removed:\n",sep=""), append=T)
-cat(file=cl2b_file, "locus\tmean_prop_SNPs\n", append=T)
-cat(file=cl2b_file, paste(paste(outloci_para_all, round(outloci_para_all_values,4), sep="\t"), collapse="\n"), append=T)
-cat(file=cl2b_file,  "\n\n", append = T)
+if(length(outloci_para_all)>0){
+  cat(file=cl2b_file, paste(length(outloci_para_all)," loci were removed:\n",sep=""), append=T)
+  cat(file=cl2b_file, "locus\tmean_prop_SNPs\n", append=T)
+  cat(file=cl2b_file, paste(paste(outloci_para_all, round(outloci_para_all_values,4), sep="\t"), collapse="\n"), append=T)
+  cat(file=cl2b_file,  "\n\n", append = T)
+}
 
 
-if(length(outloci_para_each) > 0){
+
+if(remove_outlier_loci_for_each_sample=="yes"){
   cat(file=cl2b_file, "Paralogs removed for each sample:\n", append=T)
   cat(file=cl2b_file, "Sample\tthreshold\t#removed\tnames\n", append=T)
   for(i in 1:length(names(outloci_para_each))){
@@ -331,6 +337,8 @@ if(length(outloci_para_each) > 0){
 write.csv(tab_snps_cl2b,file=file.path(output_cleaning,"Table_SNPs_cleaned.csv"))
 write.csv(tab_length_cl2b,file=file.path(output_cleaning,"Table_consensus_length_cleaned.csv"))
 
+# txt file with included samples
+write(samples[which(!(samples %in% outsamples_missing))], file=file.path(output_cleaning,"Samples_included.txt"))
 
 ### save Data as R objects
 output_Robjects <-file.path(path_for_HybPhaser_output,"R_objects")
@@ -342,3 +350,4 @@ saveRDS(outloci_missing,file=file.path(output_Robjects,"outloci_missing.Rds"))
 saveRDS(outsamples_missing,file=file.path(output_Robjects,"outsamples_missing.Rds"))
 saveRDS(outloci_para_all,file=file.path(output_Robjects,"outloci_para_all.Rds"))
 saveRDS(outloci_para_each,file=file.path(output_Robjects,"outloci_para_each.Rds"))
+
