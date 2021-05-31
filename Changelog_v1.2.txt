@@ -21,9 +21,6 @@ Bugfixes:
 - fixed issue with combinging tables (2b)
 - fixed that non-phased sequences of phased samples are removed from the combined alignment (4b)
 
-Known issues:
-
-- extract mapping reads script only works with BAM files from BWA mapping. When BLASTX is used the output file in blastx format has to be transformed to BAM first. (blast2bam)
 
 
 v.1.1 (2021-02-20)
