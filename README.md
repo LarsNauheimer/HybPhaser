@@ -1,6 +1,6 @@
 # HybPhaser
 
-Version 1.1
+Version 1.2
 
 HybPhaser was developed to deal with hybrids (and polyploids) in target capture datasets. 
 
