@@ -223,7 +223,7 @@ A table (CSV format) listing the clade references as well as an abbreviated name
 
 ## 2.2.	Extraction of mapped reads
 
-Read files vary in the proportion of reads that match the target sequences, which has impact on the proportion of reads mapping to the clade references. It is therefore recommended to only use reads for the clade association that mapped to the target sequences. HybPiper generates a bam file that marked all reads that mapped to the target sequences, which can be extracted using the command line script **extract_mapped_reads.sh**.
+Read files vary in the proportion of reads that match the target sequences, which has impact on the proportion of reads mapping to the clade references. It is therefore recommended to only use reads for the clade association that mapped to the target sequences. HybPiper generates read files for all reads that map to each gene, which can be extracted using the command line script **extract_mapped_reads.sh**.
 The script generated new read files, which can be used for the clade association analysis. 
 
 `extract_mapped_reads.sh [options]`
@@ -233,6 +233,7 @@ The script generated new read files, which can be used for the clade association
 - `-n` Text file with list of samples (one line per samples)
 - `-p` Path to HybPiper results folder. Default is current folder.
 - `-o` Path to output folder where new read files are saved. Default is a folder called _mapped_reads in the HybPiper results folder."
+- `-s` Set flag, if reads are single-end reads
 
 
 _Note: For an even more precise clade association assessment one can use BBNorm (BBMap package), which can be used to normalize the coverage in the mapped reads. The coverage of mapped reads is generally higher in the center of the targeted exons and drop towards the margins. If the sequencing coverage is high enough, a normalization step can be beneficial._
