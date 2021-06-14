@@ -137,26 +137,22 @@ file.copy(from=list.files(folder4seq_contig_loci_raw,full.names = T), to = folde
 system(paste("rename 's/_raw.fasta/.fasta/' ",folder4seq_contig_loci_clean,"/*raw.fasta -f", sep=""))  # rename files (removing "_raw")
 
 
-## remove all outlier loci
+## remove loci (failed/missing data/paralogs for all) for all samples
 
 loci_files_consensus_clean <- list.files(path = folder4seq_consensus_loci_clean, full.names = T )
 loci_files_contig_clean <- list.files(path = folder4seq_contig_loci_clean, full.names = T )
 
 loci_to_remove <- c(names(failed_loci), outloci_missing, outloci_para_all)
 
-if(length(loci_to_remove)==0){
-  loci_files_to_remove_consensus=""
-  loci_files_to_remove_contig=""
-} else {
+if(length(loci_to_remove)!=0){
   loci_files_to_remove_consensus <- loci_files_consensus_clean[grep(paste(c(loci_to_remove),collapse="|"),loci_files_consensus_clean)]
   loci_files_to_remove_contig <- loci_files_contig_clean[grep(paste(c(loci_to_remove),collapse="|"),loci_files_contig_clean)]
+  file.remove(loci_files_to_remove_consensus)
+  file.remove(loci_files_to_remove_contig)
 }
 
-file.remove(loci_files_to_remove_consensus)
-file.remove(loci_files_to_remove_contig)
 
-
-# get all samples to remove for all loci
+# get vector of all samples that should be removed from every locus
 
 samples_to_remove_4all <- vector()
 
@@ -168,15 +164,18 @@ if(length(outsamples_missing) > 0 ){
   samples_to_remove_4all <-  unique(c(samples_to_remove_4all, outsamples_missing))
 } 
 
-## remove sequences in locus files from paralogs for each sample
+
+## remove samples to be removed from all and sequences in each locus file from paralogs for each sample
 
 
 for(locus in rownames(tab_snps_cl2b)){
   
   if(length(grep(locus,outloci_para_each)) >0 ){
     samples_to_remove <- c(samples_to_remove_4all, names(outloci_para_each[grep(locus,outloci_para_each)]))
+  } else {
+    samples_to_remove <- samples_to_remove_4all
   }
-  
+    
   
   if(length(samples_to_remove) !=0 ){
     
@@ -262,7 +261,6 @@ for(file in list.files(folder4seq_contig_samples_raw, full.names = T)){
 
 
 
-
 # remove samples (missing data, paralogs for all)
 ###################################################
 
@@ -324,6 +322,8 @@ for(sample in samples_in){
   
   if(length(grep(sample,names(outloci_para_each))) > 0 ){
     loci_to_remove <- c(loci_to_remove_4all, names(outloci_para_each[[which(names(outloci_para_each)%in% sample)]]))
+  } else {
+    loci_to_remove <- loci_to_remove_4all
   }
   
   
