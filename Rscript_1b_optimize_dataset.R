@@ -57,7 +57,7 @@ if(targets_file_format == "AA"){
   print("Warning! Target file type not set properly. Should be 'DNA' or 'AA'!")
 }
 
-gene_names <- unique(gsub(".*-","",names(targets_length_all)))
+gene_names <- unique(gsub(".*-","",gsub(" .*","",names(targets_length_all))))
 max_target_length <- vector()
 
 for(i in 1:length(gene_names)){
