@@ -3,20 +3,21 @@
 ######################################################
 
 # General settings
-path_to_output_folder = "/media/FASD/LarsF/ASBS_WS/hp2_20x70_Xi/hybphaser2/"
-fasta_file_with_targets = "/media/FASD/LarsF/ASBS_WS/reference_thely/Angio353_70.fasta"
+
+path_to_output_folder = ""
+fasta_file_with_targets = ""
 targets_file_format = "DNA"    # "DNA" or "AA" 
-path_to_namelist = "/media/FASD/LarsF/ASBS_WS/hp2_20x70_Xi/01_namelist/namelist.txt"
-intronerated_contig = "yes"    # "yes" or "no" (for normal contigs)
+path_to_namelist = ""
+intronerated_contig = "no"    # "yes" or "no" (for normal contigs)
 
 
-#####################################
-### Part 1:  Dataset Optimization ###
-#####################################
+###############################
+### Part 1:  SNP Assessment ###
+###############################
 
-name_for_particular_dataset_optimization_subset =  "_intronerated" 
+name_for_particular_dataset_optimization_subset =  "" 
 
-# missing data
+# Missing data
 remove_samples_with_less_than_this_propotion_of_loci_recovered = 0
 remove_samples_with_less_than_this_propotion_of_target_sequence_length_recovered = 0
 remove_loci_with_less_than_this_propotion_of_samples_recovered = 0
@@ -28,27 +29,22 @@ file_with_putative_paralogs_to_remove_for_all_samples = ""
 remove_outlier_loci_for_each_sample = "yes"       
 
 
-
 ##################################
 ### Part 2:  Clade Association ###
 ##################################
 
-# set variables to determine thresholds for the dataset optimization and run the script from the main script
-
-path_to_clade_association_folder = "/media/FASD/LarsF/ASBS_WS/hp2_20x70_Xi/hybphaser2/05_clade_association_2ref/"
-csv_file_with_clade_reference_names = "/media/FASD/LarsF/ASBS_WS/hp2_20x70_Xi/hybphaser2/05_clade_association_2ref/clade_references_2ref.csv"
-path_to_read_files_cladeassociation = "/media/FASD/LarsF/ASBS_WS/hp2_20x70_Xi/hybphaser2/04_mapped_reads/"
+path_to_clade_association_folder = ""
+csv_file_with_clade_reference_names = ""
+path_to_read_files_cladeassociation = ""
 read_type_cladeassociation = "single-end" 
 ID_read_pair1 = ""
 ID_read_pair2 = ""
 file_with_samples_included = ""
-path_to_reference_sequences = "/media/FASD/LarsF/ASBS_WS/hp2_20x70_Xi/hybphaser2/03_sequence_lists/samples_raw_consensus/"
+path_to_reference_sequences = ""
 path_to_bbmap = ""
-no_of_threads = 12
-run_clade_association_mapping_in_R = "yes"   
-java_memory_usage_clade_association = "4G"    # e.g. 2G (for 2GB) needed when java -Xmx error comes up. should be max. 85% of physical memory
-
-
+no_of_threads = 1
+run_clade_association_mapping_in_R = "no"   
+java_memory_usage_clade_association = ""    # e.g. 2G (for 2GB) needed when java -Xmx error comes up. should be max. 85% of physical memory
 name_of_subset_to_use_in_summary_table=""
 
 
@@ -56,22 +52,19 @@ name_of_subset_to_use_in_summary_table=""
 ### Part 3: Phasing ###
 #######################
 
-# set variables and direct the scripts to the right folders and files before running the single scripts (from inside this file)
-
-path_to_phasing_folder = "/media/FASD/LarsF/ASBS_WS/hp2_20x70_Xi/hybphaser2/06_phasing/"
-csv_file_with_phasing_prep_info = "/media/FASD/LarsF/ASBS_WS/hp2_20x70_Xi/hybphaser2/06_phasing/phasing_prep.csv"
-path_to_read_files_phasing = "/media/ETA/ASBS_WS/reads_selection5/"
+path_to_phasing_folder = ""
+csv_file_with_phasing_prep_info = ""
+path_to_read_files_phasing = ""
 read_type_4phasing = "paired-end"   
-ID_read_pair1 = "_R1.fastq.gz"    # e.g. "_R1.fastq.gz"
-ID_read_pair2 = "_R2.fastq.gz"    # e.g. "_R2.fastq.gz"
-reference_sequence_folder = "/media/FASD/LarsF/ASBS_WS/hp2_20x70_Xi/hybphaser2/03_sequence_lists/samples_raw_consensus/"
-folder_for_phased_reads = "/media/FASD/LarsF/ASBS_WS/hp2_20x70_Xi/hybphaser2/06_phasing/phased_reads"
-folder_for_phasing_logs = "/media/FASD/LarsF/ASBS_WS/hp2_20x70_Xi/hybphaser2/06_phasing/phasing_stats"
+ID_read_pair1 = ""    # e.g. "_R1.fastq.gz"
+ID_read_pair2 = ""    # e.g. "_R2.fastq.gz"
+reference_sequence_folder = ""
+folder_for_phased_reads = ""
+folder_for_phasing_logs = ""
 path_to_bbmap_executables = ""
-no_of_threads_phasing = 12 
+no_of_threads_phasing = 1 
 java_memory_usage_phasing = ""    # e.g. 2G (for 2GB) needed when java -Xmx error comes up. should be max. 85% of physical memory
 run_bash_script_in_R = "no"      
-
 
 
 ################################
@@ -81,20 +74,20 @@ run_bash_script_in_R = "no"
 # This script is to generate sequence lists that combine the phased sequences with the normal non-phased ones (but exclude the normal ones of the phased accessions)
 # It is also possible to make subsets of samples or loci using lists of included or excluded samples/loci
 
-path_to_sequence_lists_normal = "/media/FASD/LarsF/ASBS_WS/hp2_20x70_Xi/hybphaser2/03_sequence_lists/loci_clean_consensus/"
-path_to_sequence_lists_phased = "/media/FASD/LarsF/ASBS_WS/hp2_20x70_Xi_phased/hybphaser2/03_sequence_lists/loci_clean_consensus/"
-path_of_sequence_lists_output = "/media/FASD/LarsF/ASBS_WS/hp2_20x70_Xi_phased/hybphaser2/03_sequence_lists_combined/loci_clean_consensus/"
+path_to_sequence_lists_normal = ""
+path_to_sequence_lists_phased = ""
+path_of_sequence_lists_output = ""
 
-path_to_namelist_normal = "/media/FASD/LarsF/ASBS_WS/hp2_20x70_Xi/01_namelist/namelist.txt"
-path_to_namelist_phased = "/media/FASD/LarsF/ASBS_WS/hp2_20x70_Xi_phased/01_namelist/namelist.txt"
+path_to_namelist_normal = ""
+path_to_namelist_phased = ""
 file_with_samples_excluded = ""
 
-# The other option is to provide a text file with included samples and thus overwriting the default. 
+# Alternatively provide a text file with included samples and thus overwriting the default. 
 file_with_samples_included = ""   
 
 # Similarly one can choose to exclude loci or use a list with only the included loci. 
 file_with_loci_excluded = ""
 file_with_loci_included = ""
 
-exchange_phased_with_not_phased_samples = "yes"   # "yes" or "no" 
-include_phased_seqlists_when_non_phased_locus_absent = "no"  # "yes" or "no"
+exchange_phased_with_not_phased_samples = "yes"   
+include_phased_seqlists_when_non_phased_locus_absent = "no" 
