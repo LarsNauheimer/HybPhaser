@@ -1,6 +1,8 @@
 # HybPhaser
 
 Version 2.0 - README IS NOT COMPLETELY UPDATED YET! 23/06/21
+ .. I will update the info here very soon but details on how to use scripts can be found in the bash scripts (-h) and in the config.txt
+ 
 
 HybPhaser was developed to deal with hybrids (and polyploids) in target capture datasets. 
 
@@ -97,7 +99,7 @@ Consensus sequences summarize the information of assembled sequence reads and ca
 To generate consensus sequences, HybPhaser maps the reads mapped of a single locus to the de novo assembled contig of that locus. Both files are available in the HybPiper output. HybPhaser uses BWA for the mapping and bcftools for the variant calling and consensus sequence generation for which the settings can be adjusted. The consensus sequences contain ambiguity characters coding for SNPs. 
 
 
-The bash script “generate_consensus_sequences.sh” is run from the command line. 
+The bash script “1_generate_consensus_sequences.sh” is run from the command line. 
 Input: _de novo_ contigs (HybPiper), reads mapped to each locus (HybPiper)
 Output: Consensus sequences and processing files for mapping and variant calling (written in HybPiper folder structure: /sample/gene/sample/sequences/remapping/)
 
