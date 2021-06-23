@@ -1,6 +1,6 @@
 # HybPhaser
 
-Version 2.0
+Version 2.0 - README IS NOT COMPLETELY UPDATED YET! 23/06/21
 
 HybPhaser was developed to deal with hybrids (and polyploids) in target capture datasets. 
 
