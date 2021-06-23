@@ -13,7 +13,7 @@ config_file="config.txt"
 
 
 # 1a) execute script to count SNPs in consensus files (this will take a few minutes)
-source("1a_snps_count.R")
+source("1a_snp_count.R")
 
 # 1b) excute the script to generate graphs for the data assessment 
 source("1b_assessment.R")
