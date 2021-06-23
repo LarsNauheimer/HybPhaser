@@ -80,8 +80,8 @@ for(sample in samples){
   }
   
   tab_sample$ambi_prop <- tab_sample$ambis/tab_sample$seq_length  
-  tab_snps[grep(sample,samples)] <- tab_sample$ambi_prop
-  tab_length[grep(sample,samples)] <- tab_sample$seq_length
+  tab_snps[match(sample,samples)] <- tab_sample$ambi_prop
+  tab_length[match(sample,samples)] <- tab_sample$seq_length
 
 }
 
