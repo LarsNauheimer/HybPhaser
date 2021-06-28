@@ -446,7 +446,7 @@ for(i in 1:2){
     png(file.path(output_assess,"3_LH_vs_AD.png"), h=1000,w=1000)
   }
   
-  plot(tab_het_ad$allele_divergence,tab_het_ad$heterozygosity,
+  plot(tab_het_ad$allele_divergence,tab_het_ad$locus_heterozygosity,
        xlab="Allele divergence [%]", ylab="Locus heterozygosity [%]", main="Locus heterozygosity vs allele divergence", las=1)
   dev.off()
 }
@@ -461,7 +461,7 @@ for(i in 1:2){
   }
   
   par(mfrow=c(2,2))
-  plot(tab_het_ad$allele_divergence,tab_het_ad$heterozygosity,
+  plot(tab_het_ad$allele_divergence,tab_het_ad$locus_heterozygosity,
        xlab="Allele divergence [%]", ylab="Locus heterozygosity (0% SNPs) [%]", main="Locus heterozygosity (0% SNPs) vs allele divergence",las=1
   )
   plot(tab_het_ad$allele_divergence,tab_het_ad$`loci with >0.5% SNPs`,
@@ -476,6 +476,7 @@ for(i in 1:2){
   par(mfrow=c(1,1))
   dev.off()
 }
+
 
 
 
