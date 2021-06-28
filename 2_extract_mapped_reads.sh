@@ -38,15 +38,14 @@ while getopts 'b:o:sn:' OPTION; do
       Usage: 2_extract_mapped_reads.sh [options]
       
         Options:
-      
-   			-b <PATH> Base folder of either HybPhaser (contains '01_data/'), HybPiper (contains sample directories), or HybPiper-RBGV (contains '04_processed_gene_directories/'). Default is './'
-			
-			-o <PATH> Outpout folder to write read files into. Default is './mapped_reads/'
-			
-			-n <PATH> Namelist. optional, if not set, all folders in samples directory are used as samples. 
-			
-			-s Select if duplicated sequences should be removed. 
-			"
+    
+        -b <PATH> Base folder of either HybPhaser (contains '01_data/'), HybPiper (contains sample directories), or HybPiper-RBGV (contains '04_processed_gene_directories/'). Default is './'
+            
+        -o <PATH> Outpout folder to write read files into. Default is './mapped_reads/'
+        
+        -n <PATH> Namelist. optional, if not set, all folders in samples directory are used as samples. 
+                
+        -s Select if duplicated sequences should be removed. "
      
       exit 1
       ;;

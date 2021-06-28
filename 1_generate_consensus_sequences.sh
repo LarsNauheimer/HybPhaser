@@ -71,17 +71,17 @@ while getopts 'ict:s:a:f:d:p:o:n:' OPTION; do
       
             -s  <Name of sample> (if not providing a namelist)
 			
-			-n 	<Namelist> (txt file with sample names, one per line)
+            -n 	<Namelist> (txt file with sample names, one per line)
         
             -p  <Path to HybPiper results folder> Default is current folder.
         
             -o  <Path to output folder>  (will be created, if it doesnt exist). Default is ../HybPhaser
-			
-			-t  <Maximum number of threads used> Default is 1. (multiple threads so not speed up much)
+		
+            -t  <Maximum number of threads used> Default is 1. (multiple threads so not speed up much)
             
             -i  -intronerated: If set, intronerate_supercontigs are used in addition to normal contigs. 
 			
-			-c  -clean-up: If set, reads and mapping files are removed (.bam, .vcf.gz)
+            -c  -clean-up: If set, reads and mapping files are removed (.bam, .vcf.gz)
 			
 			        
         Adjust consensus sequence generation:

@@ -24,7 +24,7 @@ Configuration in a single file (config.txt)
 Script 1b_cleaning and 1c_heterozygosity_assessment combined to one script 1b_assessment
   Script generated also a file listing the removed paralogs (for all samples), which can be used as input for the paralog removal of phased accessions
 
-
+...more small bug fixes and changes
 
 
 
