@@ -170,11 +170,13 @@ write.csv(tab_seq_per_locus, file.path(output_assess, "1_Data_recovered_per_locu
 summary_file=file.path(output_assess,"1_Summary_missing_data.txt")
 cat(file=summary_file, append = FALSE, "Dataset optimisation: Samples and loci removed to reduce missing data\n")
 
+cat(file=summary_file, append = T, "\n", length(failed_samples)," samples failed completely:\n", paste(names(failed_samples)),"\n", sep="")
 cat(file=summary_file, append = T, "\n", length(outsamples_missing_loci)," samples are below the threshold (",remove_samples_with_less_than_this_propotion_of_loci_recovered,") for proportion of recovered loci:\n", paste(names(outsamples_missing_loci),"\t",round(outsamples_missing_loci,3),"\n"), sep="")
-cat(file=summary_file, append = T, "\n",length(outsamples_missing_target)," samples are below the threshold (",remove_samples_with_less_than_this_propotion_of_target_sequence_length_recovered,") for recovered target sequence length\n", paste(names(outsamples_missing_target),"\t",round(outsamples_missing_target,3),"\n"), sep="")
+cat(file=summary_file, append = T, "\n", length(outsamples_missing_target)," samples are below the threshold (",remove_samples_with_less_than_this_propotion_of_target_sequence_length_recovered,") for recovered target sequence length\n", paste(names(outsamples_missing_target),"\t",round(outsamples_missing_target,3),"\n"), sep="")
 cat(file=summary_file, append = T, "\nIn total ", length(outsamples_missing), " samples were removed:\n", paste(outsamples_missing,"\n"), sep="")
 
-cat(file=summary_file, append = T, "\n",length(outloci_missing_samples)," loci are below the threshold (", remove_loci_with_less_than_this_propotion_of_samples_recovered,") for proportion of recovered samples:\n", paste(names(outloci_missing_samples),"\t",round(outloci_missing_samples,3),"\n"), sep="")
+cat(file=summary_file, append = T, "\n", length(failed_loci)," loci failed completely:\n", paste(names(failed_loci)),"\n", sep="")
+cat(file=summary_file, append = T, "\n", length(outloci_missing_samples)," loci are below the threshold (", remove_loci_with_less_than_this_propotion_of_samples_recovered,") for proportion of recovered samples:\n", paste(names(outloci_missing_samples),"\t",round(outloci_missing_samples,3),"\n"), sep="")
 cat(file=summary_file, append = T, "\n", length(outloci_missing_target)," loci are below the threshold (",remove_loci_with_less_than_this_propotion_of_target_sequence_length_recovered,") for proportion of recovered target sequence length:\n", paste(names(outloci_missing_target),"\t",round(outloci_missing_target,3),"\n"), sep="")
 cat(file=summary_file, append = T, "\nIn total ", length(outloci_missing), " loci were removed:\n", paste(outloci_missing,"\n"), sep="")
 
