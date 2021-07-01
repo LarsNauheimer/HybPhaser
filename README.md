@@ -42,7 +42,7 @@ The output of HybPiper is written in one folder per sample, output regards to si
 ### How to use HybPhaser
 
 HybPhaser consists of two bash scripts and several R scripts that can be executed from the main script in R-studio or in R directly.
-All variables necessary to run the scripts have to be set in the configuration file 'config.txt'. The path to the configuration file can be adjusted in the main script of set in R or in R directly using the line `config_file <- "/path/to/config.txt"`.
+All variables necessary to run the scripts have to be set in the configuration file 'config.txt'. The path to the configuration file can be adjusted in the main script of set in R or in R directly using the line `config_file \<- "/path/to/config.txt"`.
 
 
 **Data preparation**
@@ -97,16 +97,16 @@ Output: Collected mapped reads and contigs from HybPiper for each sample and gen
 **1_generate_consensus_sequences.sh**
       
 **Options:**
-- `-s`  <Name of sample> (only required when not providing a namelist)
-- `-n` 	<Namelist> (txt file with sample names, one per line)
-- `-p`  <Path to HybPiper results folder> Default is current folder.
-- `-o`  <Path to output folder>  (will be created, if it doesn’t exist). Default is ../HybPhaser
-- `-t`  <Maximum number of threads used> Default is 1. (multiple threads so not speed up much)
-- `-i`  -intronerated: If set, intronerate_supercontigs are used in addition to normal contigs. 
-- `-c`  -clean-up: If set, reads and mapping files are removed (.bam, .vcf.gz)
-- `-d`  Minimum coverage on site to be regarded for assigning ambiguity code. If read depth on that site is lower than chosen value, the site is not used for ambiguity code but the most frequent base is returned. Default is 10.
-- `-f`  Minimum allele frequency regarded for assigning ambiguity code. If the alternative allele is less frequent than the chosen value, it is not included in ambiguity coding. Default is 0.15.
-- `-a`  Minimum count of alleles to be regarded for assigning ambiguity code. If the alternative allele ocurrs less often than the chosen value, it is not included in ambiguity coding. Default is 4.
+- `-s`  \<Name of sample\> (only required when not providing a namelist)
+- `-n` 	\<Namelist.txt\> (txt file with sample names, one per line)
+- `-p`  \<Path to HybPiper results folder\> Default is current folder.
+- `-o`  \<Path to output folder\>  (will be created, if it doesn’t exist). Default is ../HybPhaser
+- `-t`  \<Maximum number of threads used\> Default is 1. (multiple threads so not speed up much)
+- `-i`  'intronerated': If set, intronerate_supercontigs are used in addition to normal contigs. 
+- `-c`  'clean-up': If set, reads and mapping files are removed (.bam, .vcf.gz)
+- `-d`  \<value\> Minimum coverage on site to be regarded for assigning ambiguity code. If read depth on that site is lower than chosen value, the site is not used for ambiguity code but the most frequent base is returned. Default is 10.
+- `-f`  \<value\> Minimum allele frequency regarded for assigning ambiguity code. If the alternative allele is less frequent than the chosen value, it is not included in ambiguity coding. Default is 0.15.
+- `-a`  \<value\> Minimum count of alleles to be regarded for assigning ambiguity code. If the alternative allele occurs less often than the chosen value, it is not included in ambiguity coding. Default is 4.
 
 Example
  
@@ -157,7 +157,7 @@ These variables can be configured in the configuration script:
 
 **Assessment of heterozygosity and allele divergence**
 
-The generated summary table and graphs displaying the locus heterozygosity and allele divergence can be used to make assumptions in regards to hybrid samples. Hybrids are expected to have a high locus heterozygosity (>80%) as well as a considerable allele divergence (>1%). However, these values are relative and can vary depending on the dataset, sequencing quality, study group, and many other factors. They should be carefully evaluated. High allele divergence can indicate a large population with diverse allele variants or in hybrids it can be the divergence between the parental alleles and correlate to the divergence of the parental species. A low allele divergence can indicate low allele diversity, e.g. occurring in isolated populations.  
+The generated summary table and graphs displaying the locus heterozygosity and allele divergence can be used to make assumptions in regards to hybrid samples. Hybrids are expected to have a high locus heterozygosity (\>80%) as well as a considerable allele divergence (\>1%). However, these values are relative and can vary depending on the dataset, sequencing quality, study group, and many other factors. They should be carefully evaluated. High allele divergence can indicate a large population with diverse allele variants or in hybrids it can be the divergence between the parental alleles and correlate to the divergence of the parental species. A low allele divergence can indicate low allele diversity, e.g. occurring in isolated populations.  
 
 ## 1.4. Sequence lists generation
 
@@ -194,10 +194,10 @@ Read files vary in the proportion of reads that match the target sequences, whic
 
 **Options:**
 
-- `-b` <PATH> Base folder of either HybPhaser (contains '01_data/'), HybPiper (contains sample directories), or HybPiper-RBGV (contains '04_processed_gene_directories/'). Default is './'
-- `-o` <PATH> Output folder to write read files into. Default is './mapped_reads/'
-- `-n` <PATH> Namelist. Optional, if not set, all folders in samples directory are used as samples. 
-- `-s` Select if duplicated sequences should be removed. 
+- `-b` \<path\> Base folder of either HybPhaser (contains '01_data/'), HybPiper (contains sample directories), or HybPiper-RBGV (contains '04_processed_gene_directories/'). Default is './'
+- `-o` \<path\> Output folder to write read files into. Default is './mapped_reads/'
+- `-n` \<path\> Namelist. Optional, if not set, all folders in samples directory are used as samples. 
+- `-s` Set to remove duplicated sequences (not only sequences with duplicated names). 
 
 
 ## 2.3.	BBSplit script preparation / execution
