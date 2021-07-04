@@ -23,9 +23,9 @@ remove_loci_with_less_than_this_propotion_of_samples_recovered = 0
 remove_loci_with_less_than_this_propotion_of_target_sequence_length_recovered = 0
 
 # Paralogs 
-remove_loci_for_all_samples_with_more_than_this_mean_proportion_of_SNPs =  "outliers"   # any number between 0 and 1, "none" or  "outliers" 
+remove_loci_for_all_samples_with_more_than_this_mean_proportion_of_SNPs =  "none"   # any number between 0 and 1, "none" or  "outliers" 
 file_with_putative_paralogs_to_remove_for_all_samples = ""
-remove_outlier_loci_for_each_sample = "yes"       
+remove_outlier_loci_for_each_sample = "no"       
 
 
 
