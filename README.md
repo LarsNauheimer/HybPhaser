@@ -22,7 +22,7 @@ Software dependencies
     R (v4.0)
     R-packages:
         ape (v5.4)
-        sequinR (v4.2)
+        seqinR (v4.2)
         stringR (v1.4)
     BWA (v0.0.17)
     SAMtools (v1.9)
