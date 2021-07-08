@@ -13,6 +13,7 @@ prep_phasing[is.na(prep_phasing)] <- ""
 path_to_reference_sequences <- file.path(reference_sequence_folder)
 refseqs <- list.files(path_to_reference_sequences)
 refseqs_fullpath <- list.files(path_to_reference_sequences, full.names = T)
+refseqs_samplenames <- gsub("_consensus.fasta|_contig.fasta","",refseqs)
 reads <- list.files(path_to_read_files_phasing, full.names = T)
 
 dir.create(folder_for_phased_reads, recursive = TRUE, showWarnings = FALSE)
@@ -30,7 +31,7 @@ for(i in 1:length(rownames(prep_phasing))){
   ref_co = vector()
 
   for(r in 1:nrefs){
-    ref_file <- grep(prep_phasing[i,r*2],refseqs_fullpath, value=T)
+    ref_file <- refseqs_fullpath[match(prep_phasing[i,r*2],refseqs_samplenames)]
     ref_abb <-prep_phasing[i,r*2+1] 
     ref_co[r] <- (paste("ref_",ref_abb,"=",ref_file, sep=""))
   }
