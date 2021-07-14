@@ -16,10 +16,10 @@ refseqs_fullpath <- list.files(path_to_reference_sequences, full.names = T)
 refseqs_samplenames <- gsub("_consensus.fasta|_contig.fasta","",refseqs)
 reads <- list.files(path_to_read_files_phasing, full.names = T)
 
-if(folder_for_phased_reads==""){folder_for_phased_reads <- file.path(path_to_phasing_folder,"phased_reads/")}
+if(folder_for_phased_reads==""){folder_for_phased_reads <- file.path(path_to_phasing_folder,"phased_reads")}
 dir.create(folder_for_phased_reads, recursive = TRUE, showWarnings = FALSE)
 
-if(folder_for_phased_stats==""){folder_for_phasing_stats <- file.path(path_to_phasing_folder,"phasing_stats/")}
+if(folder_for_phasing_stats==""){folder_for_phasing_stats <- file.path(path_to_phasing_folder,"phasing_stats")}
 dir.create(folder_for_phasing_stats, recursive = TRUE, showWarnings = FALSE)
 
 if(!is.numeric(no_of_threads_phasing)){no_of_threads_phasing=1} 
