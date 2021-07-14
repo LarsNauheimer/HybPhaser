@@ -10,6 +10,7 @@ source(config_file)
 phasing_prep <- read.csv(csv_file_with_phasing_prep_info, header=T)
 #as.vector(t(phasing_prep[,1+1:((length(phasing_prep)-1)/2)*2]))
 
+if(folder_for_phased_stats==""){folder_for_phasing_stats <- file.path(path_to_phasing_folder,"phasing_stats/")}
 stats_files <- list.files(folder_for_phasing_stats)
 
 # generate empty table (ref_names x samples)
@@ -42,7 +43,5 @@ for(i in 1:length(stats_files)){
 
 # save output
 write.csv(tab_phasing_stats, file=file.path(path_to_phasing_folder,"Table_phasing_stats.csv"), na = "")
-
-saveRDS(tab_phasing_stats, file.path(path_to_phasing_folder,"Table_phasing_stats.RDS"))
 
 
