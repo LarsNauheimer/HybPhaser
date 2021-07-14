@@ -73,9 +73,5 @@ tab_hetad_cladeasso_norm <- merge(summary_het_ad_clean,ttab_clade_assoc_norm, by
 # save output
 write.csv(t(tab_clade_assoc), file=file.path(path_to_clade_association_folder,"Table_clade_association.csv"))
 write.csv(t(tab_clade_assoc_norm), file=file.path(path_to_clade_association_folder,"Table_clade_association_normalised.csv"))
-write.csv(tab_hetad_cladeasso, file=file.path(path_to_clade_association_folder,"Table_clade_association_and_summary.csv"))
-write.csv(tab_hetad_cladeasso_norm, file=file.path(path_to_clade_association_folder,"Table_clade_association_and_summary_normalised.csv"))
-
-saveRDS(tab_clade_assoc, file.path(path_to_clade_association_folder,"Table_clade_association.RDS"))
-saveRDS(tab_clade_assoc_norm, file.path(path_to_clade_association_folder,"Table_clade_association_norm.RDS"))
-
+write.csv(tab_hetad_cladeasso, file=file.path(path_to_clade_association_folder,"Table_clade_association_and_summary_table.csv"))
+write.csv(tab_hetad_cladeasso_norm, file=file.path(path_to_clade_association_folder,"Table_clade_association_normalized_and_summary_table.csv"))
