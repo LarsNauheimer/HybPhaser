@@ -55,11 +55,12 @@ if(length(ref_samples$abb)>0){
 
 
 # setting no of threads
-if(no_of_threads == 0 ) {
+if(no_of_threads == 0 ||  no_of_threads == "auto") {
   threadtext <- ""
 } else {
   threadtext <- paste(" threads=",no_of_threads,sep="")
 }
+
 
 # setting Java memory usage 
 
