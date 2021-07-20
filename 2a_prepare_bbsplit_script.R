@@ -55,10 +55,10 @@ if(length(ref_samples$abb)>0){
 
 
 # setting no of threads
-if(no_of_threads == 0 ||  no_of_threads == "auto") {
+if(no_of_threads_clade_association == 0 ||  no_of_threads_clade_association == "auto") {
   threadtext <- ""
 } else {
-  threadtext <- paste(" threads=",no_of_threads,sep="")
+  threadtext <- paste(" threads=",no_of_threads_clade_association,sep="")
 }
 
 
