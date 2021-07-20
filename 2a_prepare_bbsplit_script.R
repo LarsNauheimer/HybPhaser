@@ -53,6 +53,14 @@ if(length(ref_samples$abb)>0){
   ref_command <- paste("ref=",paste(path_to_reference_sequences,ref_samples_files, collapse = ",",sep=""),sep="")
 }
 
+
+# setting no of threads
+if(no_of_threads == 0 ) {
+  threadtext <- ""
+} else {
+  threadtext <- paste(" threads=",no_of_threads,sep="")
+}
+
 # setting Java memory usage 
 
 if(java_memory_usage_clade_association != ""){
@@ -68,11 +76,11 @@ for(i in 1:length(read_files)){
     
     if(read_type_cladeassociation == "paired-end"){
       
-      bbsplit_command <- paste(path_to_bbmap,"bbsplit.sh ",ref_command, " in=",paste(path_to_read_files_cladeassociation,read_files[i],sep=""), " in2=",sub(ID_read_pair1,ID_read_pair2,paste(path_to_read_files_cladeassociation,read_files[i],sep="")), " threads=",no_of_threads," ambiguous=random ambiguous2=all refstats=",folder_bbsplit_stats, gsub(ID_read_pair1,"",read_files[i]),"_bbsplit-stats.txt", caXmx, sep="")
+      bbsplit_command <- paste(path_to_bbmap,"bbsplit.sh ",ref_command, " in=",paste(path_to_read_files_cladeassociation,read_files[i],sep=""), " in2=",sub(ID_read_pair1,ID_read_pair2,paste(path_to_read_files_cladeassociation,read_files[i],sep="")),threadtext," ambiguous=random ambiguous2=all refstats=",folder_bbsplit_stats, gsub(ID_read_pair1,"",read_files[i]),"_bbsplit-stats.txt", caXmx, sep="")
       
     } else {
   
-      bbsplit_command <- paste(path_to_bbmap,"bbsplit.sh ",ref_command, " in=",paste(path_to_read_files_cladeassociation,read_files[i],sep=""), " threads=",no_of_threads," ambiguous=random ambiguous2=all refstats=",folder_bbsplit_stats,read_files[i],"_bbsplit-stats.txt", caXmx, sep="")
+      bbsplit_command <- paste(path_to_bbmap,"bbsplit.sh ",ref_command, " in=",paste(path_to_read_files_cladeassociation,read_files[i],sep=""),threadtext," ambiguous=random ambiguous2=all refstats=",folder_bbsplit_stats,read_files[i],"_bbsplit-stats.txt", caXmx, sep="")
       
     }
   
