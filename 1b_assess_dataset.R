@@ -298,13 +298,13 @@ tab_length_cl2b <- tab_length[which(rownames(tab_length) %in% rownames(tab_snps_
 ### output 
 
 # generate graphic
-par(mfrow=c(1,1))
 for (i in 1:2){
   if(i==1){
     pdf(file=file.path(output_assess,"2b_Paralogs_for_each_sample.pdf"), width = 10, h=14)
   } else {
     png(file=file.path(output_assess,"2b_Paralogs_for_each_sample.png"), width = 1000, h=1400)
   }
+  par(mfrow=c(1,1))
   boxplot(as.data.frame(tab_snps_cl2a_nozero[,order(colMeans(as.matrix(tab_snps_cl2a_nozero), na.rm = T))]), 
           horizontal=T, las=1, yaxt='n',
           main="Proportions of SNPs for all loci per sample\n(only loci with any SNPs)",
