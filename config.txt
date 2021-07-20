@@ -45,7 +45,7 @@ ID_read_pair2 = ""
 file_with_samples_included = ""
 
 path_to_bbmap = ""
-no_of_threads = 1
+no_of_threads_clade_association = "auto"
 run_clade_association_mapping_in_R = "no"   
 java_memory_usage_clade_association = ""    # e.g. 2G (for 2GB) needed when java -Xmx error comes up. should be max. 85% of physical memory
 
@@ -67,7 +67,7 @@ reference_sequence_folder = ""
 folder_for_phased_reads = ""
 folder_for_phasing_stats = ""
 path_to_bbmap_executables = ""
-no_of_threads_phasing = 1 
+no_of_threads_phasing = "auto" 
 java_memory_usage_phasing = ""    # e.g. 2G (for 2GB) needed when java -Xmx error comes up. should be max. 85% of physical memory
 run_bash_script_in_R = "no"      
 
