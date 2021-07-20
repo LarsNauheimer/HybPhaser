@@ -22,7 +22,6 @@ dir.create(folder_for_phased_reads, recursive = TRUE, showWarnings = FALSE)
 if(folder_for_phasing_stats==""){folder_for_phasing_stats <- file.path(path_to_phasing_folder,"phasing_stats")}
 dir.create(folder_for_phasing_stats, recursive = TRUE, showWarnings = FALSE)
 
-if(!is.numeric(no_of_threads_phasing)){no_of_threads_phasing=1} 
 
 # prepare reference part of the command
 
@@ -41,6 +40,17 @@ for(i in 1:length(rownames(prep_phasing))){
 ref_command[i] <- paste(ref_co, collapse = " ")
 }  
   
+
+
+# setting no of threads
+if(no_of_threads_phasing == 0 ||  no_of_threads_phasing == "auto") {
+  threadtext <- ""
+} else {
+  threadtext <- paste(" threads=",no_of_threads_phasing,sep="")
+}
+
+
+
 # setting Java memory usage 
 
 if(java_memory_usage_phasing != ""){
@@ -65,7 +75,7 @@ if(read_type_4phasing == "paired-end"){
     read_file_1 <- reads[grep(paste(prep_phasing[i,1],ID_read_pair1,sep=""),reads)]
     read_file_2 <- reads[grep(paste(prep_phasing[i,1],ID_read_pair2,sep=""),reads)]
     
-    phasing_command[i] <- paste(path_to_bbmap_executables,"bbsplit.sh ambiguous=all ambiguous2=all threads=",no_of_threads_phasing," ",ref_command[i], " in=",read_file_1," in2=",read_file_2," basename=",folder_for_phased_reads,"/",prep_phasing[i,1],"_to_%.fastq", " refstats=",folder_for_phasing_stats,"/",prep_phasing[i,1],"_phasing-stats.txt", pXmx, sep="")
+    phasing_command[i] <- paste(path_to_bbmap_executables,"bbsplit.sh ambiguous=all ambiguous2=all", threadtext," ",ref_command[i], " in=",read_file_1," in2=",read_file_2," basename=",folder_for_phased_reads,"/",prep_phasing[i,1],"_to_%.fastq", " refstats=",folder_for_phasing_stats,"/",prep_phasing[i,1],"_phasing-stats.txt", pXmx, sep="")
     
   }  
 
@@ -77,7 +87,7 @@ if(read_type_4phasing == "paired-end"){
     
     if(length(read_file)>1) { print("ERROR: multiple single end reads are selected!")}
     
-    phasing_command[i] <- paste(path_to_bbmap_executables,"bbsplit.sh ambiguous=all ambiguous2=all threads=",no_of_threads_phasing," ",ref_command[i], " in=",read_file, " basename=",folder_for_phased_reads,"/",prep_phasing[i,1],"_to_%.fastq", " refstats=",folder_for_phasing_stats,"/",prep_phasing[i,1],"_phasing-stats.txt", pXmx, sep="")
+    phasing_command[i] <- paste(path_to_bbmap_executables,"bbsplit.sh ambiguous=all ambiguous2=all",threadtext," ",ref_command[i], " in=",read_file, " basename=",folder_for_phased_reads,"/",prep_phasing[i,1],"_to_%.fastq", " refstats=",folder_for_phasing_stats,"/",prep_phasing[i,1],"_phasing-stats.txt", pXmx, sep="")
     
   }    
 
@@ -99,5 +109,8 @@ system(command = paste("chmod +x",phasing_script_file))
 if(run_bash_script_in_R=="yes"){system(command = phasing_script_file)}
 
            
+           
+        
+
            
         
