@@ -6,8 +6,6 @@
 if (!(exists("config_file"))) {config_file <- "./config.txt"}
 source(config_file)
 
-if(!is.numeric(no_of_threads)){no_of_threads=1}
-  
 
 if(read_type_cladeassociation == "paired-end"){
   
