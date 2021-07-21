@@ -63,7 +63,7 @@ ttab_clade_assoc_norm$sample <- rownames(ttab_clade_assoc_norm)
 
 
 # for better assessment, the summary table is added to the clade assessment results
-
+if(name_for_dataset_optimization_subset != ""){name_for_dataset_optimization_subset <- paste("_",name_for_dataset_optimization_subset, sep="")} 
 summary_het_ad_clean <- readRDS(file.path(path_to_output_folder,"00_R_objects", name_for_dataset_optimization_subset, "Summary_table.Rds"))
 
 tab_hetad_cladeasso <- merge(summary_het_ad_clean,ttab_clade_assoc, by="sample", incomparables = F)
