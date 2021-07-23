@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1627020890694.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1519545452",
+    "id" : "FCDF80F3",
+    "lastKnownWriteTime" : 1627021790,
+    "last_content_update" : 1627021790690,
+    "path" : "C:/Users/jc326597/Dropbox/GitHub/HybPhaser/2a_prepare_bbsplit_script.R",
+    "project_path" : "2a_prepare_bbsplit_script.R",
+    "properties" : {
+        "cursorPosition" : "69,0",
+        "scrollLine" : "43"
+    },
+    "relative_order" : 6,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

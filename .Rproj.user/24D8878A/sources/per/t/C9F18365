@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1627015795377.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "854192598",
+    "id" : "C9F18365",
+    "lastKnownWriteTime" : 1627017313,
+    "last_content_update" : 1627017313321,
+    "path" : "C:/Users/jc326597/Dropbox/GitHub/HybPhaser/1a_count_snps.R",
+    "project_path" : "1a_count_snps.R",
+    "properties" : {
+        "cursorPosition" : "99,0",
+        "scrollLine" : "56"
+    },
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

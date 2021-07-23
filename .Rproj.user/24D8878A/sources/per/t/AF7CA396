@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1627028301665.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1800166695",
+    "id" : "AF7CA396",
+    "lastKnownWriteTime" : 1627029202,
+    "last_content_update" : 1627029202967,
+    "path" : "C:/Users/jc326597/Dropbox/GitHub/HybPhaser/3a_prepare_phasing_script.R",
+    "project_path" : "3a_prepare_phasing_script.R",
+    "properties" : {
+        "cursorPosition" : "93,83",
+        "scrollLine" : "65"
+    },
+    "relative_order" : 8,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

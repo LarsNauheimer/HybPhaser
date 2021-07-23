@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1627015380892.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1500424729",
+    "id" : "C25BD62A",
+    "lastKnownWriteTime" : 1627020839,
+    "last_content_update" : 1627020839283,
+    "path" : "C:/Users/jc326597/Dropbox/GitHub/HybPhaser/1c_generate_sequence_lists.R",
+    "project_path" : "1c_generate_sequence_lists.R",
+    "properties" : {
+        "cursorPosition" : "155,9",
+        "scrollLine" : "147"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
