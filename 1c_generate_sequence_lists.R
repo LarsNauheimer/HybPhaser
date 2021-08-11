@@ -11,11 +11,14 @@ library(ape)
 library(seqinr)
 library(stringr)
 
-
-if(name_for_dataset_optimization_subset != ""){name_for_dataset_optimization_subset <- paste("_",name_for_dataset_optimization_subset, sep="")} 
+if(name_for_dataset_optimization_subset != ""){
+  folder_subset_add <- paste("_",name_for_dataset_optimization_subset, sep="")
+} else {
+  folder_subset_add <- ""
+} 
 
 output_Robjects <- file.path(path_to_output_folder,"00_R_objects", name_for_dataset_optimization_subset)
-output_sequences <- file.path(path_to_output_folder,paste("03_sequence_lists", name_for_dataset_optimization_subset, sep=""))
+output_sequences <- file.path(path_to_output_folder,paste("03_sequence_lists", folder_subset_add, sep=""))
 
 if(intronerated_contig=="yes"){
   intronerated_name <- "intronerated" 
