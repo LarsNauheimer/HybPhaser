@@ -35,6 +35,7 @@ if(file.exists(file=file.path(output_Robjects,"Table_SNPs.Rds"))){
 
 tab_snps <- as.matrix(tab_snps)
 loci <- t(tab_snps)
+samples <- readLines(path_to_namelist)
 
 
 ##########################################################
