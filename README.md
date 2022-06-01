@@ -113,6 +113,9 @@ Example
 `1_generate_consensus_sequences.sh -n namelist.txt -p hybpiper_output_folder -o hybphaser_output_folder -t 4 `
 
 
+*Note: The default setting for variance calling is set to prevent low quality assemblies to result in false positives (SNPs due to contamination or sequencing errors). If the coverage is low (e.g. due to poor sequencing recovery), SNPs will not be called and the proportion of heterozygous sites will be reported lower than it actually is. 
+The setting of minimum allele frequency of 15% to be recorded as SNP is used to prevent contaminations resulting in wrong SNP count, but can underestimate real allele divergence in highly polyploid accessions.*
+
 
 ## 1.2. Assessment of consensus sequences (SNPs count) 
 
