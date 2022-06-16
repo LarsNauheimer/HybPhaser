@@ -298,7 +298,7 @@ The R script **4a_merge_sequence_lists.R** can be used to combine the phased wit
 -	`file_with_samples_excluded`: define subset by listing accession to exclude (`""` will exclude none)
 -	`file_with_loci_included`: define subset by listing loci to include (`""` will include all)
 -	`file_with_loci_excluded`: define subset by listing loci to exclude (`""` will exclude none)
--	`exchange_phased_with_not_phased_samples`: set whether the non-phased accessions of the phased samples will be exchanged (`"yes"`), or not (`"no"`). Default is `"no"`.
+-	`exchange_phased_with_not_phased_samples`: set whether the non-phased accessions of the phased samples will be exchanged (`"yes"`), or not (`"no"`). Default is `"yes"`.
 -	`include_phased_seqlists_when_non_phased_locus_absent`: set to `"yes"`, if loci that are only in the phased list but not in the non-phased list should be included. Default is `"no"`.
 
 The combined sequence lists are ready for alignment and phylogenetic analyses.
