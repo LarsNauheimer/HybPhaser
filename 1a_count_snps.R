@@ -70,7 +70,7 @@ for(sample in samples){
     
     file.path(path_to_output_folder,"01_data",sample, "consensus", paste(gene,intronerated_underscore,intronerated_name,".fasta",sep=""))
     
-    if(file.info(consensus_file)$size !=0){
+    if(file.info(consensus_file)$size >1){
       stats <- seq_stats(consensus_file)
     } else {
       stats <- c(NA,NA)
