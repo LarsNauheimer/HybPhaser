@@ -355,7 +355,7 @@ if(length(outsamples_missing)==0){
   samples_files_to_remove_contig=""
 } else {
   samples_files_to_remove_consensus <- sample_files_consensus[which(gsub(".*/(.*)_consensus.fasta","\\1",sample_files_consensus) %in% outsamples_missing)]
-  samples_files_to_remove_contig <- sample_files_contig[which(gsub(".*/(.*)_consensus.fasta","\\1",sample_files_contig) %in% outsamples_missing)]
+  samples_files_to_remove_contig <- sample_files_contig[which(gsub(".*/(.*)_contigs.fasta","\\1",sample_files_contig) %in% outsamples_missing)]
 
   file.remove(samples_files_to_remove_consensus)
   file.remove(samples_files_to_remove_contig)
