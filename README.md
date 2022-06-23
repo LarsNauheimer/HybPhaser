@@ -87,6 +87,7 @@ Consensus sequences summarize the information of assembled sequence reads and ca
 To generate consensus sequences, HybPhaser requires from the HybPiper output for each sample and each gene the reads mapped to the particular gene and the _denovo_ assembled contig. These files are collected and saved under (01_data) in subfolders for each sample. 
 When paired-end reads were used for the assembly, HybPiper separates mapped reads into two files, "gene_interleaved.fastq" for reads with pairs and "gene_unpaired.fastq" for reads without pairs. HybPhaser combines those files into one file "gene_combined.fasta".
 Finally, HybPhaser maps for each gene the mapped reads to the _denovo_ contig and generates a consensus sequence that contains ambiguity codes where divergent reads occur. To prevent sequencing errors to be coded as ambiguity codes, variants are only called when there is a coverage of at least 10, a variant occurring at least 4 times and in at least 15% of the reads (parameters for variant calling can be adjusted). 
+Since version 2.1, this script runs the process parallel on all available cores. This speeds up the process a lot, but might impact the use of the computer for other applications. There is an alternative script available that uses only a single core. 
 
 The bash script **1_generate_consensus_sequences.sh** is executed in the terminal (command line). 
 
@@ -101,7 +102,6 @@ Output: Collected mapped reads and contigs from HybPiper for each sample and gen
 - `-n` 	\<Namelist.txt\> (txt file with sample names, one per line)
 - `-p`  \<Path to HybPiper results folder\> Default is current folder.
 - `-o`  \<Path to output folder\>  (will be created, if it doesn’t exist). Default is ../HybPhaser
-- `-t`  \<Maximum number of threads used\> Default is 1. (multiple threads so not speed up much)
 - `-i`  'intronerated': If set, intronerate_supercontigs are used in addition to normal contigs. 
 - `-c`  'clean-up': If set, reads and mapping files are removed (.bam, .vcf.gz)
 - `-d`  \<value\> Minimum coverage on site to be regarded for assigning ambiguity code. If read depth on that site is lower than chosen value, the site is not used for ambiguity code but the most frequent base is returned. Default is 10.
