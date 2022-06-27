@@ -13,7 +13,7 @@ prep_phasing[is.na(prep_phasing)] <- ""
 path_to_reference_sequences <- file.path(reference_sequence_folder)
 refseqs <- list.files(path_to_reference_sequences)
 refseqs_fullpath <- list.files(path_to_reference_sequences, full.names = T)
-refseqs_samplenames <- gsub("_consensus.fasta|_contig.fasta","",refseqs)
+refseqs_samplenames <- gsub("(_intronerated)*_consensus.fasta|(_intronerated)*_contig.fasta","",refseqs)
 reads <- list.files(path_to_read_files_phasing, full.names = T)
 
 if(folder_for_phased_reads==""){folder_for_phased_reads <- file.path(path_to_phasing_folder,"phased_reads")}

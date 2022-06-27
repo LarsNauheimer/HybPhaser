@@ -6,7 +6,7 @@ HybPhaser was developed to deal with hybrids (and polyploids) in target capture 
 
 It detects hybrids by measuring heterozygosity in the dataset and phase hybrid accessions by separating reads according to similarity with selected taxa that represent parental clades. 
 
-HybPhaser is built as an extension to the assembly pipeline [HybPiper](https://github.com/mossmatters/HybPiper). 
+HybPhaser is built as an extension to the assembly pipeline [HybPiper](https://github.com/mossmatters/HybPiper). Check also the new and improved [HybPiper 2](https://hackmd.io/@mossmatters/rkuBTSH-q)!
 
 A preprint of the submitted manuscript describing the application of HybPhaser is available at [bioRxiv]( https://www.biorxiv.org/content/10.1101/2020.10.27.354589v2)
 
@@ -28,7 +28,7 @@ Software dependencies
     SAMtools (v1.9)
     Bcftools (v1.9)
     BBSplit (BBMap v38.87)
-    HybPiper (v1.3.1)
+    HybPiper (v1.3.1-2.08)
 
 ## Data Preparation
 
@@ -87,6 +87,7 @@ Consensus sequences summarize the information of assembled sequence reads and ca
 To generate consensus sequences, HybPhaser requires from the HybPiper output for each sample and each gene the reads mapped to the particular gene and the _denovo_ assembled contig. These files are collected and saved under (01_data) in subfolders for each sample. 
 When paired-end reads were used for the assembly, HybPiper separates mapped reads into two files, "gene_interleaved.fastq" for reads with pairs and "gene_unpaired.fastq" for reads without pairs. HybPhaser combines those files into one file "gene_combined.fasta".
 Finally, HybPhaser maps for each gene the mapped reads to the _denovo_ contig and generates a consensus sequence that contains ambiguity codes where divergent reads occur. To prevent sequencing errors to be coded as ambiguity codes, variants are only called when there is a coverage of at least 10, a variant occurring at least 4 times and in at least 15% of the reads (parameters for variant calling can be adjusted). 
+Since version 2.1, this script runs the process parallel on all available cores. This speeds up the process a lot, but might impact the use of the computer for other applications. There is an alternative script available that uses only a single core. 
 
 The bash script **1_generate_consensus_sequences.sh** is executed in the terminal (command line). 
 
@@ -101,7 +102,6 @@ Output: Collected mapped reads and contigs from HybPiper for each sample and gen
 - `-n` 	\<Namelist.txt\> (txt file with sample names, one per line)
 - `-p`  \<Path to HybPiper results folder\> Default is current folder.
 - `-o`  \<Path to output folder\>  (will be created, if it doesn’t exist). Default is ../HybPhaser
-- `-t`  \<Maximum number of threads used\> Default is 1. (multiple threads so not speed up much)
 - `-i`  'intronerated': If set, intronerate_supercontigs are used in addition to normal contigs. 
 - `-c`  'clean-up': If set, reads and mapping files are removed (.bam, .vcf.gz)
 - `-d`  \<value\> Minimum coverage on site to be regarded for assigning ambiguity code. If read depth on that site is lower than chosen value, the site is not used for ambiguity code but the most frequent base is returned. Default is 10.
@@ -112,6 +112,9 @@ Example
  
 `1_generate_consensus_sequences.sh -n namelist.txt -p hybpiper_output_folder -o hybphaser_output_folder -t 4 `
 
+
+*Note: The default setting for variance calling is set to prevent low quality assemblies to result in false positives (SNPs due to contamination or sequencing errors). If the coverage is low (e.g. due to poor sequencing recovery), SNPs will not be called and the proportion of heterozygous sites will be reported lower than it actually is. 
+The setting of minimum allele frequency of 15% to be recorded as SNP is used to prevent contaminations resulting in wrong SNP count, but can underestimate real allele divergence in highly polyploid accessions.*
 
 
 ## 1.2. Assessment of consensus sequences (SNPs count) 
@@ -295,7 +298,7 @@ The R script **4a_merge_sequence_lists.R** can be used to combine the phased wit
 -	`file_with_samples_excluded`: define subset by listing accession to exclude (`""` will exclude none)
 -	`file_with_loci_included`: define subset by listing loci to include (`""` will include all)
 -	`file_with_loci_excluded`: define subset by listing loci to exclude (`""` will exclude none)
--	`exchange_phased_with_not_phased_samples`: set whether the non-phased accessions of the phased samples will be exchanged (`"yes"`), or not (`"no"`). Default is `"no"`.
+-	`exchange_phased_with_not_phased_samples`: set whether the non-phased accessions of the phased samples will be exchanged (`"yes"`), or not (`"no"`). Default is `"yes"`.
 -	`include_phased_seqlists_when_non_phased_locus_absent`: set to `"yes"`, if loci that are only in the phased list but not in the non-phased list should be included. Default is `"no"`.
 
 The combined sequence lists are ready for alignment and phylogenetic analyses.

@@ -37,6 +37,7 @@ tab_snps <- as.matrix(tab_snps)
 loci <- t(tab_snps)
 samples <- readLines(path_to_namelist)
 
+file.copy(from = config_file, to=file.path(output_assess,"0_used_config_file.txt"))
 
 ##########################################################
 ### Dataset optimization step 1: Reducing missing data ### 
@@ -345,7 +346,7 @@ if(length(outloci_para_all)>0){
   cat(file=cl2b_file,  "\n\n", append = T)
 }
 
-cat(file= file.path(output_assess,"2a_List_of_paralogs_removed_for_all_samples.txt"), paste(outloci_para_all,collapse = "\n"))
+cat(file= file.path(output_assess,"2a_List_of_paralogs_removed_for_all_samples.txt"), paste(c(outloci_para_all,"\n"),collapse = "\n"))
 
 
 
@@ -368,7 +369,7 @@ write.csv(tab_snps_cl2b, file = file.path(output_assess,"0_Table_SNPs.csv"))
 write.csv(tab_length_cl2b, file = file.path(output_assess,"0_Table_consensus_length.csv"))
 
 # txt file with included samples
-write(samples[which(!(samples %in% outsamples_missing))], file=file.path(output_assess,"0_namelist_included_samples.txt"))
+write(rownames(loci)[which(!(rownames(loci) %in% outsamples_missing))], file=file.path(output_assess,"0_namelist_included_samples.txt"))
 
 #write(paste(rownames(tab_snps_cl2a),colMeans(t(tab_snps_cl2a), na.rm = T)), file=file.path(output_assess,"Mean_SNPs_loci.txt"))
 
@@ -406,7 +407,7 @@ for(i in 1:length(colnames(tab_snps_cl2b))){
   tab_het_ad$bpoftarget[i] <- round(sum(tab_length_cl2b[,i], na.rm = T)/targets_length_cl2b,3)*100
   tab_het_ad$paralogs_all[i] <- length(outloci_para_all)
   tab_het_ad$paralogs_each[i] <- length(outloci_para_each[[i]])
-  tab_het_ad$nloci[i] <- nloci_cl2-length(which(is.na(tab_snps_cl2b[,i])))
+  tab_het_ad$nloci[i] <- nloci_cl1-length(outloci_para_all)-length(which(is.na(tab_snps_cl2b[,i])))-length(outloci_para_each[[i]])
   tab_het_ad$allele_divergence[i] <- 100*round(sum(tab_length_cl2b[,i] * tab_snps_cl2b[,i], na.rm = T) / sum(tab_length_cl2b[,i], na.rm = T),5)
   tab_het_ad$locus_heterozygosity[i] <- 100*round(1 - length(which(tab_snps_cl2b[,i]==0))/ (nloci_cl2-length(which(is.na(tab_snps_cl2b[,i])))),4)
   tab_het_ad$'loci with >0.5% SNPs'[i] <- 100*round(1 - length(which(tab_snps_cl2b[,i]<0.005))/ (nloci_cl2-length(which(is.na(tab_snps_cl2b[,i])))),4)
