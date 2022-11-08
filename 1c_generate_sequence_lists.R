@@ -39,6 +39,11 @@ outloci_para_all <- readRDS(file=file.path(output_Robjects,"outloci_para_all.Rds
 outloci_para_each <- readRDS(file=file.path(output_Robjects,"outloci_para_each.Rds"))
 tab_snps_cl2b <- readRDS(file=file.path(output_Robjects,"Table_SNPs_cleaned.Rds"))
 
+tab_snps <- as.matrix(tab_snps_cl2b)
+loci <- t(tab_snps)
+failed_loci <- which(colSums(is.na(loci))==nrow(loci))
+failed_samples <- which(colSums(is.na(tab_snps))==nrow(tab_snps))
+
 
 #############################################
 
