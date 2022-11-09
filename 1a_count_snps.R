@@ -75,8 +75,8 @@ for(sample in samples){
     } else {
       stats <- c(NA,NA)
     }  
-    tab_sample$seq_length[grep(gene,tab_sample$targets)] <- stats[1]
-    tab_sample$ambis[grep(gene,tab_sample$targets)] <- stats[2]  
+    tab_sample$seq_length[match(gene,tab_sample$targets)] <- stats[1]
+    tab_sample$ambis[match(gene,tab_sample$targets)] <- stats[2]  
   
   }
   
