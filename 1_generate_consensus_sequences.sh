@@ -188,7 +188,7 @@ do
 		
 		
 			makecons () {
-				local run=$1
+				local CONTIG=$1
 				FILE=${CONTIG/*\/*contigs\//}
 				GENE=${FILE/.fasta/}
 				
@@ -239,9 +239,14 @@ do
 			}
 		
 		
-		for CONTIG in $CONTIGPATH/*.fasta; do 
+		max_jobs="$THREADS"
+		current_jobs=0
+		for CONTIG in $CONTIGPATH/*.fasta; do
+				((current_jobs >= max_jobs)) && wait -n 
 				makecons "$CONTIG" & 
+				((++current_jobs))
 		done
+		wait
 				
 		DURATION_SAMPLE=$SECONDS
 		echo -e '\e[1A\e[K'Generated consensus for $SAMPLE in $(($DURATION_SAMPLE / 60)) minutes and $(($DURATION_SAMPLE % 60)) seconds.
