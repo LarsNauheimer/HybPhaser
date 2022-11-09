@@ -218,6 +218,7 @@ if (length(remove_loci_for_all_samples_with_more_than_this_mean_proportion_of_SN
   if(file.exists(file_with_putative_paralogs_to_remove_for_all_samples) == FALSE){
     print("File with list of paralogs to remove for all samples does not exist.")
   } else {
+    threshold_value <- 1
     outloci_para_all <- readLines(file_with_putative_paralogs_to_remove_for_all_samples)
     outloci_para_all_values <-loci_cl1_colmeans[which(names(loci_cl1_colmeans) %in% outloci_para_all)]
   }
