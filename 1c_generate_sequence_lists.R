@@ -100,7 +100,7 @@ if(Sys.info()['sysname']=="Linux"){
   if(intronerated_contig=="yes"){
     for(locus in targets_name){
       #list all fasta files from that locus for all samples
-      fasta_files <- list.files(path=file.path(path_to_output_folder,"01_data/"), pattern=paste(locus,"_intronerated.fasta",sep=""), recursive=TRUE, full.names = TRUE)
+      fasta_files <- list.files(path=file.path(path_to_output_folder,"01_data/"), pattern=paste("^",locus,"_intronerated.fasta",sep=""), recursive=TRUE, full.names = TRUE)
       #select consensus/contig files
       consensus_files <- grep("consensus",fasta_files,value = TRUE)
       contigs_files <- grep("contigs",fasta_files,value = TRUE)
