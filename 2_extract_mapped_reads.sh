@@ -123,6 +123,7 @@ do
 		rm $OUTDIR/$SAMPLE"_mapped_reads.fasta" 2>/dev/null
 		
 	else
+		echo Keeping all reads for $SAMPLE
 		# NOTE: if the following commented code is run on paired-end interleaved data,
 		#		which is the normal output from HybPhaser, one of the paired reads
 		#		will be dropped (they have identical names), which seems like non-ideal
