@@ -82,26 +82,23 @@ if [[ -f $NAMELIST ]]; then
 
 else
 	
-	SAMPLES='ls -d -1 $SAMPLESDIR/*'
-	SAMPLE=${SAMPLES##*/}
+	SAMPLES=$(ls -d -1 $SAMPLESDIR/* | rev | cut -f 1 -d "/" | rev)
 
 fi
 
 
-for i in $SAMPLESDIR/*
+for SAMPLE in $SAMPLES
 do
-	SAMPLE=${i##*/}
-	
-	echo Generating deduplicated on-target reads files for $SAMPLE
-	
+	echo Generating on-target reads files for $SAMPLE
+
 	# concatenate reads (mapped per gene) per sample from either HybPhaser or HybPiper folders
 	if [[ $HYB == "phaser" ]]; then
 		
-		cat $SAMPLESDIR/$SAMPLE/reads/*_unpaired.fasta $SAMPLESDIR/$SAMPLE/reads/*_combined.fasta > $OUTDIR/$SAMPLE"_mapped_reads_with_dups.fasta" 2>/dev/null
+		cat $SAMPLESDIR/$SAMPLE/reads/*_unpaired.fasta $SAMPLESDIR/$SAMPLE/reads/*_combined.fasta > $OUTDIR/$SAMPLE"_mapped_reads.fasta" 2>/dev/null
 		
 	else 
 	
-		cat $SAMPLESDIR/$SAMPLE/*/*_unpaired.fasta $SAMPLESDIR/$SAMPLE/*/*_interleaved.fasta > $OUTDIR/$SAMPLE"_mapped_reads_with_dups.fasta" 2>/dev/null
+		cat $SAMPLESDIR/$SAMPLE/*/*_unpaired.fasta $SAMPLESDIR/$SAMPLE/*/*_interleaved.fasta > $OUTDIR/$SAMPLE"_mapped_reads.fasta" 2>/dev/null
 	
 	fi	
 	
@@ -115,27 +112,29 @@ do
 # remove the first line (it's a blank line) and save the result into $output
 
 	if [[ $DEDUPSEQ == "TRUE" ]]; then 
-	
-		sed '/^>/s/$/@/' < $OUTDIR/$SAMPLE"_mapped_reads_with_dups.fasta" | 
-		sed 's/^>/#/' |\
+		echo Deduplicating reads files for $SAMPLE
+
+		sed -e '/^>/s/$/@/' -e 's/^>/#/' $OUTDIR/$SAMPLE"_mapped_reads.fasta" |\
 		tr -d '\n' | tr "#" "\n" | tr "@" "\t" |\
-		sort -u -f -k 2,2  |\
-		sed -e 's/^/>/' |\
-		tr '\t' '\n/' |\
-		tail -n +2 > $OUTDIR/$SAMPLE"_mapped_reads_dedup-seq.fasta"	
+		sort -u -t $'\t' -f -k 2,2  |\
+		sed -e 's/^/>/' -e 's/\t/\n/' |\
+		tail -n +2 > $OUTDIR/$SAMPLE"_mapped_reads_dedup-seq.fasta"
+
+		rm $OUTDIR/$SAMPLE"_mapped_reads.fasta" 2>/dev/null
 		
 	else
-	
-		sed '/^>/s/$/@/' < $OUTDIR/$SAMPLE"_mapped_reads_with_dups.fasta" | 
-		sed 's/^>/#/' |\
-		tr -d '\n' | tr "#" "\n" | tr "@" "\t" |\
-		sort -u -f -k 1,1  |\
-		sed -e 's/^/>/' |\
-		tr '\t' '\n/' |\
-		tail -n +2 > $OUTDIR/$SAMPLE"_mapped_reads.fasta"
+		# NOTE: if the following commented code is run on paired-end interleaved data,
+		#		which is the normal output from HybPhaser, one of the paired reads
+		#		will be dropped (they have identical names), which seems like non-ideal
+		#		behaviour (and different from what happens in removing duplicates above)
+
+		#sed -e '/^>/s/$/@/' -e 's/^>/#/' $OUTDIR/$SAMPLE"_mapped_reads.fasta" |\
+		#tr -d '\n' | tr "#" "\n" | tr "@" "\t" |\
+		#sort -u -t $'\t' -f -k 1,1  |\
+		#sed -e 's/^/>/' -e 's/\t/\n/' |\
+		#tail -n +2 > $OUTDIR/$SAMPLE"_mapped_reads_nodupnames.fasta"
 		
+		#mv $OUTDIR/$SAMPLE"_mapped_reads_nodupnames.fasta" $OUTDIR/$SAMPLE"_mapped_reads.fasta"
 	fi
 
-	rm $OUTDIR/$SAMPLE"_mapped_reads_with_dups.fasta" 2>/dev/null
-	
 done
