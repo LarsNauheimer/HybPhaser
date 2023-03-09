@@ -183,12 +183,15 @@ do
 			# when intronerate is selected
 			mkdir -p $OUTDIR/$SAMPLE/intronerated_contigs
 			cp $PIPERDIR/$SAMPLE/*/*/sequences/intron/*_supercontig.fasta $OUTDIR/$SAMPLE/intronerated_contigs/ 2> /dev/null
-			for f in $OUTDIR/$SAMPLE/intronerated_contigs/*.*
+			for file in $OUTDIR/$SAMPLE/intronerated_contigs/*_supercontig.fasta
 			do
-				sed -i "s/ .*//" $f
-				awk '{if(NR==1) {print $0} else {if($0 ~ /^>/) {print "\n"$0} else {printf $0}}}' "$f" > "${f/_supercontig/_intronerated}"
-				rm "$f" -f
-				echo "" >> "${f/_supercontig/_intronerated}"
+				filename="$(basename $file)"
+				GENE=${filename/_supercontig.fasta/}
+				sed -i "s/ .*//" $file
+				sed -E -i "s/(>.*)/\1-$GENE/" $file
+				awk '{if(NR==1) {print $0} else {if($0 ~ /^>/) {print "\n"$0} else {printf $0}}}' "$file" > "${file/_supercontig/_intronerated}"
+				rm "$file"
+				echo "" >> "${file/_supercontig/_intronerated}"
 			done
 			CONTIGPATH="$OUTDIR/$SAMPLE/intronerated_contigs"
 			mkdir -p "$OUTDIR/$SAMPLE/intronerated_consensus"
