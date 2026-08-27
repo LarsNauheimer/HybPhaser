@@ -10,6 +10,7 @@ HybPhaser is built as an extension to the assembly pipeline [HybPiper](https://g
 
 A preprint of the submitted manuscript describing the application of HybPhaser is available at [bioRxiv]( https://www.biorxiv.org/content/10.1101/2020.10.27.354589v2)
 
+I am currently working on a version that is compatible with CAPTUS.  [Email](mailto:lars.nauheimer@jcu.edu.au) me, if you are interested.
 
 ## Installation
 
